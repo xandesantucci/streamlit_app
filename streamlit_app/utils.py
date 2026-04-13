@@ -1,6 +1,6 @@
 import re
 import streamlit as st
-# import pywhatkit as kit
+import pywhatkit as kit
 # import smtplib
 # from email.mime.text import MIMEText
 # from email.mime.multipart import MIMEMultipart
@@ -20,8 +20,8 @@ def st_write_justify(text, word='none', color="green"):
     )
 
 
-# def message_whatsapp(mensagem):
-#     kit.sendwhatmsg_instantly("+5521980029229", mensagem)
+def message_whatsapp(mensagem):
+    kit.sendwhatmsg_instantly("+5521980029229", mensagem)
 
 # def message_email(mensagem,assunto):
 #     from selenium import webdriver
