@@ -1,9 +1,9 @@
 import re
 import streamlit as st
-import pywhatkit as kit
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+# import pywhatkit as kit
+# import smtplib
+# from email.mime.text import MIMEText
+# from email.mime.multipart import MIMEMultipart
 
 def st_write_justify(text, word='none', color="green"):
     if word != 'none':
@@ -20,40 +20,40 @@ def st_write_justify(text, word='none', color="green"):
     )
 
 
-def message_whatsapp(mensagem):
-    kit.sendwhatmsg_instantly("+5521980029229", mensagem)
+# def message_whatsapp(mensagem):
+#     kit.sendwhatmsg_instantly("+5521980029229", mensagem)
 
-def message_email(mensagem,assunto):
-    from selenium import webdriver
-    from selenium.webdriver.common.by import By
-    from selenium.webdriver.common.keys import Keys
-    from webdriver_manager.chrome import ChromeDriverManager
-    from selenium.webdriver.chrome.service import Service
-    import time
+# def message_email(mensagem,assunto):
+#     from selenium import webdriver
+#     from selenium.webdriver.common.by import By
+#     from selenium.webdriver.common.keys import Keys
+#     from webdriver_manager.chrome import ChromeDriverManager
+#     from selenium.webdriver.chrome.service import Service
+#     import time
 
-    # abrir navegador
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-    driver.get("https://mail.google.com/")
+#     # abrir navegador
+#     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+#     driver.get("https://mail.google.com/")
 
-    # tempo para você logar manualmente
-    time.sleep(20)
+#     # tempo para você logar manualmente
+#     time.sleep(20)
 
-    # clicar em "Escrever"
-    driver.find_element(By.XPATH, "//div[text()='Escrever']").click()
-    time.sleep(3)
+#     # clicar em "Escrever"
+#     driver.find_element(By.XPATH, "//div[text()='Escrever']").click()
+#     time.sleep(3)
 
-    # destinatário
-    driver.find_element(By.NAME, "to").send_keys("destino@email.com")
+#     # destinatário
+#     driver.find_element(By.NAME, "to").send_keys("destino@email.com")
 
-    # assunto
-    driver.find_element(By.NAME, "subjectbox").send_keys("Email automático via Python")
+#     # assunto
+#     driver.find_element(By.NAME, "subjectbox").send_keys("Email automático via Python")
 
-    # corpo
-    body = driver.find_element(By.XPATH, "//div[@aria-label='Corpo da mensagem']")
-    body.send_keys("Olá! Este email foi enviado automaticamente via Python.")
+#     # corpo
+#     body = driver.find_element(By.XPATH, "//div[@aria-label='Corpo da mensagem']")
+#     body.send_keys("Olá! Este email foi enviado automaticamente via Python.")
 
-    # enviar
-    body.send_keys(Keys.CONTROL + Keys.ENTER)
+#     # enviar
+#     body.send_keys(Keys.CONTROL + Keys.ENTER)
 
-    time.sleep(5)
-    driver.quit()
+#     time.sleep(5)
+#     driver.quit()

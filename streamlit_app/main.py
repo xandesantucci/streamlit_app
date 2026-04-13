@@ -3,7 +3,8 @@ import pandas as pd
 # import plotly.express as px
 # import plotly.graph_objects as go
 from datetime import datetime
-from utils import st_write_justify,message_whatsapp,message_email
+from utils import st_write_justify
+# ,message_whatsapp,message_email
 
 
 # Configuração da página
@@ -321,7 +322,7 @@ elif menu_option == "📞 Contact":
                 
                 full_text = f'Hi Alexandre, my name is {name}.\nI work for {company}.\nI would really like to talk about {subject}.\n{message}'
 
-                message_whatsapp(full_text)                # message_email(mensagem)
+                # message_whatsapp(full_text)                # message_email(mensagem)
 
                 # Demonstração do session state
                 if 'messages_sent' not in st.session_state:
