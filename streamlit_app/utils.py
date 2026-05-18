@@ -5,19 +5,19 @@ import streamlit as st
 # # from email.mime.text import MIMEText
 # # from email.mime.multipart import MIMEMultipart
 
-# def st_write_justify(text, word='none', color="green"):
-#     if word != 'none':
-#         text = re.sub(
-#             word,
-#             lambda m: f"<span style='color:{color}; font-weight:bold'>{m.group(0)}</span>",
-#             text,
-#             flags=re.IGNORECASE
-#         )
+def st_write_justify(text, word='none', color="green"):
+    if word != 'none':
+        text = re.sub(
+            word,
+            lambda m: f"<span style='color:{color}; font-weight:bold'>{m.group(0)}</span>",
+            text,
+            flags=re.IGNORECASE
+        )
 
-#     return st.markdown(
-#         f"<div style='text-align: justify;'>{text}</div>",
-#         unsafe_allow_html=True
-#     )
+    return st.markdown(
+        f"<div style='text-align: justify;'>{text}</div>",
+        unsafe_allow_html=True
+    )
 
 
 # def message_whatsapp(mensagem):
