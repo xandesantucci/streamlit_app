@@ -2,10 +2,10 @@ import streamlit as st
 import pandas as pd
 # import plotly.express as px
 # import plotly.graph_objects as go
-from datetime import datetime
+from datetime import datetime, timedelta
 from utils import st_write_justify
 # ,message_whatsapp,message_email
-
+import time
 
 # Configuração da página
 st.set_page_config(
@@ -48,7 +48,7 @@ with st.sidebar:
     menu_option = st.radio(
         "Sessions:",
         ["🏠 Start"
-         , "👨‍💻 Experience"
+         , "💪​ Gym"
          , "🎓 Education"
          , "🛠️ Habilities"
          , "📊 Analytics"
@@ -173,9 +173,110 @@ if menu_option == "🏠 Start":
         #     st.success(f"Arquivo {uploaded_file.name} carregado com sucesso!")
 
 # # Página de experiência
-elif menu_option == "👨‍💻 Experience":
-    st.markdown('<h1 class="section-header">In Developtment</h1>', unsafe_allow_html=True)
+elif menu_option == "💪​ Gym":
+    st.markdown('<h1 class="section-header">Gym</h1>', unsafe_allow_html=True)
     
+    df = pd.read_excel('arquivo.xlsx')
+
+
+    # Converter data
+    # df['dt_ymd'] = pd.to_datetime(df['dt_ymd'], dayfirst=True)
+
+    # Converter peso
+    df['weight'] = (
+        df['weight']
+        .str.replace(',', '.', regex=False)
+        .astype(float)
+    )
+
+    list_group = st.radio("Select:", df['group'].unique(),horizontal=True)
+
+    df = df[df['group'] == list_group]
+
+    # Ordenar
+    df = df.sort_values(['exercise', 'dt_ymd'])
+
+    col1, col2 = st.columns([2, 1.5])
+        
+    with col1:
+
+        st.line_chart(df,x='dt_ymd',y='weight',color='exercise')
+
+    # Pegar últimos 2 registros de cada exercício
+    ultimos = df.groupby('exercise').tail(2)
+
+    # Criar ranking dentro do exercício
+    ultimos['ordem'] = ultimos.groupby('exercise').cumcount() + 1
+
+    # Pivotar
+    resultado = ultimos.pivot(
+        index='exercise',
+        columns='ordem',
+        values='weight'
+    ).reset_index()
+
+    # Renomear colunas
+    resultado.columns = [
+        'exercise',
+        'Last',
+        'Now'
+    ]
+    
+    resultado['dif'] = resultado['Now'] - resultado['Last']
+
+
+    with col2:
+
+        st.dataframe(resultado.style.highlight_between('dif',left=0.1, right=10),height=(len(resultado) + 1) * 36)
+
+
+    st.title("🏋️ Timer de Descanso")
+
+    # session state para guardar histórico
+    if "historico" not in st.session_state:
+        st.session_state.historico = []
+
+    segundos = st.slider(
+        "Segundos",
+        45,
+        120,
+        60
+    )
+
+    placeholder = st.empty()
+
+    if st.button("▶️ Start"):
+
+        horario_fim = datetime.now() + timedelta(seconds=segundos)
+
+        for i in range(segundos, -1, -1):
+
+            mins, secs = divmod(i, 60)
+
+            placeholder.markdown(
+                f"""
+                <h1 style='text-align:center;font-size:80px;'>
+                    {mins:02d}:{secs:02d}
+                </h1>
+
+                <h3 style='text-align:center;'>
+                    Termina às {horario_fim.strftime("%H:%M:%S")}
+                </h3>
+                """,
+                unsafe_allow_html=True
+            )
+
+            time.sleep(1)
+
+        # adiciona nova linha no histórico
+        st.session_state.historico.append(
+            f"✅ Descanso finalizado às {datetime.now().strftime('%H:%M:%S')}"
+        )
+
+    # printa todas as execuções
+    for item in st.session_state.historico:
+        st.success(item)
+
 #     profile_data = load_profile_data()
     
 #     for exp in profile_data["experiencias"]:
