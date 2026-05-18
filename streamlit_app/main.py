@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from pandas.tseries.offsets import DateOffset
 # import plotly.express as px
 # import plotly.graph_objects as go
 from datetime import datetime, timedelta
@@ -49,7 +50,7 @@ with st.sidebar:
         "Sessions:",
         ["🏠 Start"
          , "💪​ Gym"
-         , "🎓 Education"
+         , "💵​ Education"
          , "🛠️ Habilities"
          , "📊 Analytics"
          , "📞 Contact"]
@@ -176,8 +177,10 @@ if menu_option == "🏠 Start":
 elif menu_option == "💪​ Gym":
     st.markdown('<h1 class="section-header">Gym</h1>', unsafe_allow_html=True)
     
-    df = pd.read_excel('streamlit_app/arquivo_gym.xlsx')
-
+    try:
+        df = pd.read_excel('streamlit_app/arquivo_gym.xlsx')
+    except:
+        df = pd.read_excel('arquivo_gym.xlsx')
 
     # Converter data
     # df['dt_ymd'] = pd.to_datetime(df['dt_ymd'], dayfirst=True)
@@ -217,17 +220,25 @@ elif menu_option == "💪​ Gym":
 
     # Renomear colunas
     resultado.columns = [
-        'exercise',
+        'Exercise',
         'Last',
         'Now'
     ]
     
-    resultado['dif'] = resultado['Now'] - resultado['Last']
+    resultado['Dif'] = resultado['Now'] - resultado['Last']
     
+    resultado['Exercise'] = resultado['Exercise'].str.capitalize()
+
+    resultado[['Last', 'Now', 'Dif']] = resultado[['Last', 'Now', 'Dif']].round(1)
+
 
     with col2:
 
-        st.dataframe(resultado.style.highlight_between('dif',left=0.1, right=10),height=(len(resultado) + 1) * 36)
+        st.dataframe(resultado.style.format({
+        'Last': '{:.1f}',
+        'Now': '{:.1f}',
+        'Dif': '{:.1f}'
+    }).highlight_between('Dif',left=0.1, right=10),hide_index=True,height=(len(resultado) + 1) * 36)
 
 
     st.title("🏋️ Timer de Descanso")
@@ -291,17 +302,114 @@ elif menu_option == "💪​ Gym":
 #             st.markdown("---")
 
 # # Página de educação
-elif menu_option == "🎓 Education":
-    st.markdown('<h1 class="section-header">In Developtment</h1>', unsafe_allow_html=True)
+elif menu_option == "💵​ Education":
+    st.markdown('<h1 class="section-header">Fixo</h1>', unsafe_allow_html=True)
     
-#     profile_data = load_profile_data()
+    try:
+        df = pd.read_excel('streamlit_app/arquivo_fixo.xlsx')
+    except:
+        df = pd.read_excel('arquivo_fixo.xlsx')
+
+    # Converter peso
+    df['VALOR'] = (
+        df['VALOR']
+        .str.replace('.', '', regex=False)
+        .str.replace(',', '.', regex=False)
+        .astype(float)
+    )
+
+    df['VALOR_DIVIDE'] = (
+        df['VALOR_DIVIDE']
+        .str.replace('.', '', regex=False)
+        .str.replace(',', '.', regex=False)
+        .astype(float)
+    )
+
+    df['ANOMES'] = pd.to_datetime(
+    pd.to_numeric(df['ANOMES'], errors='coerce')
+    .fillna(0)
+    .astype(int)
+    .astype(str),
+    format='%Y%m',
+    errors='coerce'
+    ).dt.strftime('%m/%Y')
+
+    df = df[df['ANOMES'].notna()]
+
+    df['TIPO'] = df['TIPO'].str.lower()
+
+    list_group = st.selectbox("Select:", df['ANOMES'].unique())
+
+    df_filtro_1= df[df['ANOMES'] == list_group]
+
+    mes_anterior = (
+    pd.to_datetime(list_group, format='%m/%Y')
+    - DateOffset(months=1)
+    ).strftime('%m/%Y')
+
+    df_filtro_2 = df[df['ANOMES'] == mes_anterior]
     
-#     for edu in profile_data["educacao"]:
-#         with st.container():
-#             st.markdown(f"### {edu['curso']}")
-#             st.markdown(f"**{edu['instituicao']}**")
-#             st.markdown(f"*{edu['periodo']}*")
-#             st.markdown("---")
+    col1, col2, col3 = st.columns([1, 1,1])
+
+    with col1:
+
+        df_ops_1 = df_filtro_1.groupby('ANOMES').sum()
+
+        st.write('Valor Atual: ',df_ops_1['VALOR_DIVIDE'][0])
+    
+    with col2:
+
+        df_ops_2 = df_filtro_2.groupby('ANOMES').sum()
+
+        st.write('Valor Anterior: ',df_ops_2['VALOR_DIVIDE'][0])
+
+    with col3:
+
+        df_ops_1_2 = (df_ops_1['VALOR_DIVIDE'][0] - df_ops_2['VALOR_DIVIDE'][0]) * 100 / df_ops_2['VALOR_DIVIDE'][0]
+
+        st.write('Aumento: ',df_ops_1_2.round(1),'%')
+
+    # st.write(list_group.str[4:])
+
+    df_filtrado = df[
+    (df['ANOMES'] >= mes_anterior) &
+    (df['ANOMES'] <= list_group)
+    ]
+
+    df_filtrado = df_filtrado.sort_values(['TIPO', 'ANOMES'])
+    ultimos = df_filtrado.groupby('TIPO').tail(2)
+
+    # Criar ranking dentro do exercício
+    ultimos['ordem'] = ultimos.groupby('TIPO').cumcount() + 1
+
+    # Pivotar
+    resultado = ultimos.pivot(
+        index='TIPO',
+        columns='ordem',
+        values='VALOR'
+    ).reset_index()
+
+    # Renomear colunas
+    resultado.columns = [
+        'Tipo',
+        'Last',
+        'Now'
+    ]
+    
+    resultado['Dif'] = resultado['Now'] - resultado['Last']
+
+    resultado['%'] = (resultado['Now'] - resultado['Last']) * 100 / resultado['Last']
+    
+    resultado['Tipo'] = resultado['Tipo'].str.capitalize()
+
+    # resultado[['Last', 'Now', 'Dif']] = resultado[['Last', 'Now', 'Dif']].round(1)
+    
+    st.dataframe(resultado.style.format({
+        'Last': '{:.1f}',
+        'Now': '{:.1f}',
+        'Dif': '{:.1f}',
+        '%': '{:.0f}'
+    }).highlight_between('Dif',left=0.1, right=10000),hide_index=True,height=(len(resultado) + 1) * 36)
 
 # # Página de habilidades
 elif menu_option == "🛠️ Habilities":
