@@ -1,2 +1,7 @@
 pywhatkit
+<<<<<<< Updated upstream
 plotly
+=======
+plotly
+requests
+>>>>>>> Stashed changes
