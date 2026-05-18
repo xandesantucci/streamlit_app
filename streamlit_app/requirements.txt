@@ -1,4 +1,3 @@
-pywhatkit
 plotly
 requests
 time
