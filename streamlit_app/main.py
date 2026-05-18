@@ -176,7 +176,7 @@ if menu_option == "🏠 Start":
 elif menu_option == "💪​ Gym":
     st.markdown('<h1 class="section-header">Gym</h1>', unsafe_allow_html=True)
     
-    df = pd.read_excel('arquivo.xlsx')
+    df = pd.read_excel('streamlit_app/arquivo.xlsx')
 
 
     # Converter data
