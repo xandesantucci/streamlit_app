@@ -80,7 +80,7 @@ def load_profile_data():
             {
                 "role": "Senior Data Analyst"
                 , "empresa": "Pluxee Brasil"
-                , 'company_photo': 'https://media.licdn.com/dms/image/v2/D4E0BAQFGw9nfFeGHQw/company-logo_200_200/B4EZu09jBnKQAI-/0/1768267592168/pluxee_br_logo?e=1777507200&v=beta&t=4SRLoHB6xTSQVQGyEwjZx18Njy1i8CsysDdy4thWl9s'
+                , 'company_photo': 'pluxee_br_logo'
                 , "period": "nov/25 - Present"
                 , "description": "Developing"
                 , 'tools' : 'Python, Power BI, SQL, VBA, Excel'
@@ -88,7 +88,7 @@ def load_profile_data():
             {
                 "role": "Data Analyst"
                 , "empresa": "Vila 11"
-                , 'company_photo': 'https://media.licdn.com/dms/image/v2/D4D0BAQFCJ39PonRwVA/company-logo_200_200/company-logo_200_200/0/1727445742003/vila11_logo?e=1777507200&v=beta&t=coJLMwQXZ3CKzh4Kxaz0JH0QuX8qiSzmf6EU1rpIzP8'
+                , 'company_photo': 'vila11_logo'
                 , "period": "abr/25 - nov/25"
                 , "description": "Developed interactive Power BI dashboards integrated with Azure Databricks data pipelines, providing real-time strategic insights to marketing and sales teams. "
                     "Automated data collection, transformation, and loading processes using Power Automate and Python, reducing processing time by 35% and increasing data reliability. "
@@ -100,7 +100,7 @@ def load_profile_data():
             {
                 "role": "Data Analyst"
                 , "empresa": "Oi"
-                , 'company_photo': 'https://media.licdn.com/dms/image/v2/D4D0BAQHSpZ63oeMgeA/company-logo_200_200/company-logo_200_200/0/1714513065939/oioficial_logo?e=1777507200&v=beta&t=0dDqJXjhhxLgErwkPoQoTfxaJz_zs_doBZPAAUa_OsU'
+                , 'company_photo': 'oioficial_logo'
                 , "period": "abr/25 - nov/25"
                 , "description": 'Developed an interactive Python dashboard using Streamlit, connected to SQL and SharePoint databases, to optimize resource allocation and productivity analysis. The solution replaced manual processes and third-party software, resulting in annual cost savings of R$200,000 and improved decision-making through dynamic visualizations and predictive insights. '
                     'Created SQL stored procedures and complex views to streamline integration with managerial dashboards, accelerating data collection and organization. '
@@ -129,12 +129,15 @@ if menu_option == "🏠 Start":
     col1, col2 = st.columns([1, 2.5])
     
     with col1:
+        
         col_aux1, col_aux2 = st.columns([1,2])
+
         with col_aux1:
-            st.image("https://media.licdn.com/dms/image/v2/D4D03AQEbV3zhJKzI6Q/profile-displayphoto-shrink_400_400/B4DZU9ppbnHAAg-/0/1740496083441?e=1777507200&v=beta&t=9uxudj9nSV47mvdk4AVD8awfzlk31pX39fljAq3-lHc", 
-                    width=100
-                    )
+
+            st.image('images/1740496083441.jfif',width=100)
+
         with col_aux2:
+
             st.markdown(f"### {profile_data['name']}")
             st.markdown(f"**{profile_data['experiences'][0]['role']}**")
             st.markdown(f"📍 {profile_data['location']}")
@@ -159,7 +162,7 @@ if menu_option == "🏠 Start":
                     col_met1, col_met2, col_met3 = st.columns([1,4,1])
 
                     with col_met1:
-                        st.image(exp['company_photo'],width="content")
+                        st.image(f'images/{exp['company_photo']}.jfif'  ,width="content")
 
                     with col_met2:
                         st_write_justify(exp['description'],skill_to_view)
@@ -197,13 +200,14 @@ elif menu_option == "💪​ Gym":
     df = df[df['group'] == list_group]
 
     # Ordenar
-    df = df.sort_values(['exercise', 'dt_ymd'])
+    # df = df.sort_values(['exercise', 'dt_ymd'])
 
     col1, col2 = st.columns([2, 1.5])
         
     with col1:
-
-        st.line_chart(df,x='dt_ymd',y='weight',color='exercise')
+        
+        df_graph = df.sort_values(['exercise', 'dt_ymd'])
+        st.line_chart(df_graph,x='dt_ymd',y='weight',color='exercise')
 
     # Pegar últimos 2 registros de cada exercício
     ultimos = df.groupby('exercise').tail(2)
@@ -238,7 +242,7 @@ elif menu_option == "💪​ Gym":
         'Last': '{:.1f}',
         'Now': '{:.1f}',
         'Dif': '{:.1f}'
-    }).highlight_between('Dif',left=0.1, right=10),hide_index=True,height=(len(resultado) + 1) * 36)
+    }).highlight_between('Dif',left=0.1, right=10,color='green'),hide_index=True,height=(len(resultado) + 1) * 36)
 
 
     st.title("🏋️ Timer de Descanso")
@@ -325,6 +329,8 @@ elif menu_option == "💵​ Education":
         .astype(float)
     )
 
+    df = df.sort_values(['ANOMES'],ascending=False)
+
     df['ANOMES'] = pd.to_datetime(
     pd.to_numeric(df['ANOMES'], errors='coerce')
     .fillna(0)
@@ -338,37 +344,52 @@ elif menu_option == "💵​ Education":
 
     df['TIPO'] = df['TIPO'].str.lower()
 
-    list_group = st.selectbox("Select:", df['ANOMES'].unique())
+    # list_group = st.selectbox("Select:", df['ANOMES'].unique())
 
-    df_filtro_1= df[df['ANOMES'] == list_group]
+    # df_filtro_1= df[df['ANOMES'] == list_group]
 
-    mes_anterior = (
-    pd.to_datetime(list_group, format='%m/%Y')
-    - DateOffset(months=1)
-    ).strftime('%m/%Y')
+    # mes_anterior = (
+    # pd.to_datetime(list_group, format='%m/%Y')
+    # - DateOffset(months=1)
+    # ).strftime('%m/%Y')
 
-    df_filtro_2 = df[df['ANOMES'] == mes_anterior]
+    # df_filtro_2 = df[df['ANOMES'] == mes_anterior]
     
-    col1, col2, col3 = st.columns([1, 1,1])
+    col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
 
     with col1:
+        list_group = st.selectbox('Mês',options=df['ANOMES'].unique())
+
+        df_filtro_1= df[df['ANOMES'] == list_group]
+
+        mes_anterior = (
+        pd.to_datetime(list_group, format='%m/%Y')
+        - DateOffset(months=1)
+        ).strftime('%m/%Y')
+
+        df_filtro_2 = df[df['ANOMES'] == mes_anterior]
+
+    with col2:
 
         df_ops_1 = df_filtro_1.groupby('ANOMES').sum()
 
         st.write('Valor Atual: ',df_ops_1['VALOR_DIVIDE'][0])
     
-    with col2:
-
-        df_ops_2 = df_filtro_2.groupby('ANOMES').sum()
-
-        st.write('Valor Anterior: ',df_ops_2['VALOR_DIVIDE'][0])
-
     with col3:
+        try:
+            df_ops_2 = df_filtro_2.groupby('ANOMES').sum()
 
-        df_ops_1_2 = (df_ops_1['VALOR_DIVIDE'][0] - df_ops_2['VALOR_DIVIDE'][0]) * 100 / df_ops_2['VALOR_DIVIDE'][0]
+            st.write('Valor Anterior: ',df_ops_2['VALOR_DIVIDE'][0])
+        except:
+            st.write('Sem valor anterior')
 
-        st.write('Aumento: ',df_ops_1_2.round(1),'%')
+    with col4:
+        try:
+            df_ops_1_2 = (df_ops_1['VALOR_DIVIDE'][0] - df_ops_2['VALOR_DIVIDE'][0]) * 100 / df_ops_2['VALOR_DIVIDE'][0]
 
+            st.write('Aumento: ',df_ops_1_2.round(1),'%')
+        except:
+            st.write()
     # st.write(list_group.str[4:])
 
     df_filtrado = df[
@@ -377,29 +398,47 @@ elif menu_option == "💵​ Education":
     ]
 
     df_filtrado = df_filtrado.sort_values(['TIPO', 'ANOMES'])
+  
     ultimos = df_filtrado.groupby('TIPO').tail(2)
 
-    # Criar ranking dentro do exercício
-    ultimos['ordem'] = ultimos.groupby('TIPO').cumcount() + 1
+    ultimos['ordem'] = ultimos.groupby('TIPO').cumcount()  + 1
+
 
     # Pivotar
-    resultado = ultimos.pivot(
-        index='TIPO',
-        columns='ordem',
-        values='VALOR'
-    ).reset_index()
+    try:
+        resultado = ultimos.pivot(
+            index='TIPO',
+            columns='ordem',
+            values='VALOR'
+        ).reset_index()
 
-    # Renomear colunas
-    resultado.columns = [
-        'Tipo',
-        'Last',
-        'Now'
-    ]
-    
-    resultado['Dif'] = resultado['Now'] - resultado['Last']
+        # Renomear colunas
+        resultado.columns = [
+            'Tipo',
+            'Last',
+            'Now'
+        ]
 
-    resultado['%'] = (resultado['Now'] - resultado['Last']) * 100 / resultado['Last']
+        resultado['Dif'] = resultado['Now'] - resultado['Last']
+
+        resultado['%'] = (resultado['Now'] - resultado['Last']) * 100 / resultado['Last']
     
+
+    except:
+        resultado = ultimos[['TIPO','VALOR_DIVIDE']]
+
+        resultado['Last'] = 0
+        resultado['Dif'] = 0
+        resultado['%'] = 0
+
+        resultado.columns = [
+            'Tipo',
+            'Now',
+            'Last',
+            'Dif',
+            '%'
+        ]
+
     resultado['Tipo'] = resultado['Tipo'].str.capitalize()
 
     # resultado[['Last', 'Now', 'Dif']] = resultado[['Last', 'Now', 'Dif']].round(1)
@@ -409,7 +448,7 @@ elif menu_option == "💵​ Education":
         'Now': '{:.1f}',
         'Dif': '{:.1f}',
         '%': '{:.0f}'
-    }).highlight_between('Dif',left=0.1, right=10000),hide_index=True,height=(len(resultado) + 1) * 36)
+    }).highlight_between('Dif',left=0.1, right=10000, color='red'),hide_index=True,height=(len(resultado) + 1) * 36)
 
 # # Página de habilidades
 elif menu_option == "🛠️ Habilities":
