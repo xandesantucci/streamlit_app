@@ -378,13 +378,13 @@ elif menu_option == "💵​ Education":
 
     with col2:
 
-        df_ops_1 = df_filtro_1.groupby('ANOMES').sum()
+        df_ops_1 = df_filtro_1.groupby('ANOMES').sum().reset_index()
 
         st.write('Valor Atual: ',df_ops_1['VALOR_DIVIDE'][0])
     
     with col3:
         try:
-            df_ops_2 = df_filtro_2.groupby('ANOMES').sum()
+            df_ops_2 = df_filtro_2.groupby('ANOMES').sum().reset_index()
 
             st.write('Valor Anterior: ',df_ops_2['VALOR_DIVIDE'][0])
         except:
