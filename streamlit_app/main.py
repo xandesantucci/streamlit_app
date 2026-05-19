@@ -129,12 +129,14 @@ if menu_option == "🏠 Start":
     col1, col2 = st.columns([1, 2.5])
     
     with col1:
-        
+
         col_aux1, col_aux2 = st.columns([1,2])
 
         with col_aux1:
-
-            st.image('images/1740496083441.jfif',width=100)
+            try:
+                st.image('streamlit_app/images/1740496083441.jfif',width=100)
+            except:
+                st.image('images/1740496083441.jfif',width=100)
 
         with col_aux2:
 
@@ -162,7 +164,12 @@ if menu_option == "🏠 Start":
                     col_met1, col_met2, col_met3 = st.columns([1,4,1])
 
                     with col_met1:
-                        st.image(f'images/{exp['company_photo']}.jfif'  ,width="content")
+                        try:
+                            st.image(f'streamlit_app/images/{exp['company_photo']}.jfif'  ,width="content")
+                        except:
+                            st.image(f'images/{exp['company_photo']}.jfif'  ,width="content")
+
+                        
 
                     with col_met2:
                         st_write_justify(exp['description'],skill_to_view)
