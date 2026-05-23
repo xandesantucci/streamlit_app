@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from utils import st_write_justify
 # ,message_whatsapp,message_email
 import time
+import holidays
 
 # Configuração da página
 st.set_page_config(
@@ -461,6 +462,65 @@ elif menu_option == "💵​ Education":
 elif menu_option == "🛠️ Habilities":
     st.markdown('<h1 class="section-header">In Developtment</h1>', unsafe_allow_html=True)
     
+
+    # Feriados SP
+    feriados = holidays.country_holidays("BR", subdiv="SP")
+
+    # Criar calendário do ano inteiro
+    datas = pd.date_range("2026-01-01", "2026-12-31")
+
+    df = pd.DataFrame({"Data": datas})
+
+    # Dia da semana (0=segunda, 6=domingo)
+    df["DiaSemana"] = df["Data"].dt.weekday
+
+    # Identificar fim de semana
+    df["FimSemana"] = df["DiaSemana"] >= 5
+
+    # Identificar feriado
+    df["Feriado"] = df["Data"].isin(feriados)
+
+    # Dias úteis
+    df["DiaUtil"] = ~(df["FimSemana"] | df["Feriado"])
+
+    # Mês
+    df["Mes"] = df["Data"].values.astype("datetime64[M]")
+
+    # Contagem de dias úteis
+    dias_uteis = (
+        df[df["DiaUtil"]]
+        .groupby("Mes")
+        .size()
+        .reset_index(name="DiasUteis")
+    )
+
+    # Considerando 8h por dia
+    HORAS_DIA = 8
+
+    dias_uteis["HorasMes"] = dias_uteis["DiasUteis"] * HORAS_DIA
+
+    st.write(dias_uteis)
+
+    feriados_br = holidays.country_holidays("BR")
+
+# Feriados estaduais SP (inclui nacionais também)
+    feriados_sp = holidays.country_holidays("BR", subdiv="SP")
+
+    feriados_sp_2 = feriados_sp["2024-01-01":"2024-12-31"]
+    feriados_br_2 = feriados_br["2024-01-01":"2024-12-31"]
+    print(feriados_sp_2)
+
+    for feriado in feriados_sp_2:
+        print(feriado)
+    for feriado in feriados_br_2:
+        print(feriado)
+    # df = pd.DataFrame({"Data": datas})
+
+    # df["Feriado"] = df["Data"].isin(feriados_sp_2)
+
+    # # df = pd.DataFrame(dados, columns=["Data", "Feriado"])
+
+    # st.dataframe(df, hide_index=True)
 #     profile_data = load_profile_data()
     
 #     # Gráfico de barras para habilidades
