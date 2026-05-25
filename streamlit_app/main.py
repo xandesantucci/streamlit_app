@@ -50,7 +50,7 @@ with st.sidebar:
     menu_option = st.radio(
         "Sessions:",
         ["🏠 Start"
-         , "💪​ Gym"
+        #  , "💪​ Gym"
          , "💵​ Education"
          , "🛠️ Habilities"
          , "📊 Analytics"
@@ -184,123 +184,123 @@ if menu_option == "🏠 Start":
         # if uploaded_file is not None:
         #     st.success(f"Arquivo {uploaded_file.name} carregado com sucesso!")
 
-# # Página de experiência
-elif menu_option == "💪​ Gym":
-    st.markdown('<h1 class="section-header">Gym</h1>', unsafe_allow_html=True)
+# # # Página de experiência
+# elif menu_option == "💪​ Gym":
+#     st.markdown('<h1 class="section-header">Gym</h1>', unsafe_allow_html=True)
     
-    try:
-        df = pd.read_excel('streamlit_app/arquivo_gym.xlsx')
-    except:
-        df = pd.read_excel('arquivo_gym.xlsx')
+#     try:
+#         df = pd.read_excel('streamlit_app/arquivo_gym.xlsx')
+#     except:
+#         df = pd.read_excel('arquivo_gym.xlsx')
 
-    # Converter data
-    # df['dt_ymd'] = pd.to_datetime(df['dt_ymd'], dayfirst=True)
+#     # Converter data
+#     # df['dt_ymd'] = pd.to_datetime(df['dt_ymd'], dayfirst=True)
 
-    # Converter peso
-    df['weight'] = (
-        df['weight']
-        .str.replace(',', '.', regex=False)
-        .astype(float)
-    )
+#     # Converter peso
+#     df['weight'] = (
+#         df['weight']
+#         .str.replace(',', '.', regex=False)
+#         .astype(float)
+#     )
 
-    list_group = st.radio("Select:", df['group'].unique(),horizontal=True)
+#     list_group = st.radio("Select:", df['group'].unique(),horizontal=True)
 
-    df = df[df['group'] == list_group]
+#     df = df[df['group'] == list_group]
 
-    # Ordenar
-    # df = df.sort_values(['exercise', 'dt_ymd'])
+#     # Ordenar
+#     # df = df.sort_values(['exercise', 'dt_ymd'])
 
-    col1, col2 = st.columns([2, 1.5])
+#     col1, col2 = st.columns([2, 1.5])
         
-    with col1:
+#     with col1:
         
-        df_graph = df.sort_values(['exercise', 'dt_ymd'])
-        st.line_chart(df_graph,x='dt_ymd',y='weight',color='exercise')
+#         df_graph = df.sort_values(['exercise', 'dt_ymd'])
+#         st.line_chart(df_graph,x='dt_ymd',y='weight',color='exercise')
 
-    # Pegar últimos 2 registros de cada exercício
-    ultimos = df.groupby('exercise').tail(2)
+#     # Pegar últimos 2 registros de cada exercício
+#     ultimos = df.groupby('exercise').tail(2)
 
-    # Criar ranking dentro do exercício
-    ultimos['ordem'] = ultimos.groupby('exercise').cumcount() + 1
+#     # Criar ranking dentro do exercício
+#     ultimos['ordem'] = ultimos.groupby('exercise').cumcount() + 1
 
-    # Pivotar
-    resultado = ultimos.pivot(
-        index='exercise',
-        columns='ordem',
-        values='weight'
-    ).reset_index()
+#     # Pivotar
+#     resultado = ultimos.pivot(
+#         index='exercise',
+#         columns='ordem',
+#         values='weight'
+#     ).reset_index()
 
-    # Renomear colunas
-    resultado.columns = [
-        'Exercise',
-        'Last',
-        'Now'
-    ]
+#     # Renomear colunas
+#     resultado.columns = [
+#         'Exercise',
+#         'Last',
+#         'Now'
+#     ]
     
-    resultado['Dif'] = resultado['Now'] - resultado['Last']
+#     resultado['Dif'] = resultado['Now'] - resultado['Last']
     
-    resultado['Exercise'] = resultado['Exercise'].str.capitalize()
+#     resultado['Exercise'] = resultado['Exercise'].str.capitalize()
 
-    resultado[['Last', 'Now', 'Dif']] = resultado[['Last', 'Now', 'Dif']].round(1)
-
-
-    with col2:
-
-        st.dataframe(resultado.style.format({
-        'Last': '{:.1f}',
-        'Now': '{:.1f}',
-        'Dif': '{:.1f}'
-    }).highlight_between('Dif',left=0.1, right=10,color='green'),hide_index=True,height=(len(resultado) + 1) * 36)
+#     resultado[['Last', 'Now', 'Dif']] = resultado[['Last', 'Now', 'Dif']].round(1)
 
 
-    st.title("🏋️ Timer de Descanso")
+#     with col2:
 
-    # session state para guardar histórico
-    if "historico" not in st.session_state:
-        st.session_state.historico = []
+#         st.dataframe(resultado.style.format({
+#         'Last': '{:.1f}',
+#         'Now': '{:.1f}',
+#         'Dif': '{:.1f}'
+#     }).highlight_between('Dif',left=0.1, right=10,color='green'),hide_index=True,height=(len(resultado) + 1) * 36)
 
-    segundos = st.slider(
-        "Segundos",
-        45,
-        120,
-        60
-    )
 
-    placeholder = st.empty()
+#     st.title("🏋️ Timer de Descanso")
 
-    if st.button("▶️ Start"):
+#     # session state para guardar histórico
+#     if "historico" not in st.session_state:
+#         st.session_state.historico = []
 
-        horario_fim = datetime.now() + timedelta(seconds=segundos)
+#     segundos = st.slider(
+#         "Segundos",
+#         45,
+#         120,
+#         60
+#     )
 
-        for i in range(segundos, -1, -1):
+#     placeholder = st.empty()
 
-            mins, secs = divmod(i, 60)
+#     if st.button("▶️ Start"):
 
-            placeholder.markdown(
-                f"""
-                <h1 style='text-align:center;font-size:80px;'>
-                    {mins:02d}:{secs:02d}
-                </h1>
+#         horario_fim = datetime.now() + timedelta(seconds=segundos)
 
-                <h3 style='text-align:center;'>
-                    Termina às {horario_fim.strftime("%H:%M:%S")}
-                </h3>
-                """,
-                unsafe_allow_html=True
-            )
+#         for i in range(segundos, -1, -1):
 
-            time.sleep(1)
+#             mins, secs = divmod(i, 60)
 
-        # adiciona nova linha no histórico
-        st.session_state.historico.append(
-            f"✅ Descanso finalizado às {datetime.now().strftime('%H:%M:%S')}"
-        )
+#             placeholder.markdown(
+#                 f"""
+#                 <h1 style='text-align:center;font-size:80px;'>
+#                     {mins:02d}:{secs:02d}
+#                 </h1>
 
-    # printa todas as execuções
-    for item in st.session_state.historico:
-        st.success(item)
+#                 <h3 style='text-align:center;'>
+#                     Termina às {horario_fim.strftime("%H:%M:%S")}
+#                 </h3>
+#                 """,
+#                 unsafe_allow_html=True
+#             )
 
-#     profile_data = load_profile_data()
+#             time.sleep(1)
+
+#         # adiciona nova linha no histórico
+#         st.session_state.historico.append(
+#             f"✅ Descanso finalizado às {datetime.now().strftime('%H:%M:%S')}"
+#         )
+
+#     # printa todas as execuções
+#     for item in st.session_state.historico:
+#         st.success(item)
+
+# #     profile_data = load_profile_data()
     
 #     for exp in profile_data["experiencias"]:
 #         with st.container():
