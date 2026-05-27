@@ -31,12 +31,14 @@ df['weight'] = (
     .astype(float)
 )
 
-list_group = st.selectbox("Select:", df['group'].unique())
+list_group = st.selectbox("Select:", np.sort(df['group'].unique()))
 
 df = df[df['group'] == list_group]
 
 # Ordenar
 # df = df.sort_values(['exercise', 'dt_ymd'])
+
+
 
 col1, col2 = st.columns([2, 1.5])
     
@@ -99,75 +101,86 @@ st.title("🏋️ Timer de Descanso")
 if "historico" not in st.session_state:
     st.session_state.historico = []
 
-col1, col2 = st.columns([1,1])
-with col1:
 
-    # ultimos_aux = df.groupby('exercise').tail(1)
-    # st.write(ultimos_aux)
 
-    segundos = st.number_input(
-    "Break",
-    min_value=0,
-    value=60,
-    step=1
-    )
-    placeholder = st.empty()
+# ultimos_aux = df.groupby('exercise').tail(1)
+# st.write(ultimos_aux)
 
-    # st.write(st.session_state.historico)
+segundos = st.number_input(
+"Break",
+min_value=0,
+value=60,
+step=1
+)
+placeholder = st.empty()
 
-with col2:
+# st.write(st.session_state.historico)
+
+
     
-    col_c1, col_c2 = st.columns([1,1])
-    for line in range(0,len(resultado)):
-        with col_c1:
+st.markdown(
+"""
+<style>
+[data-testid="column"] {
+    width: calc(50% - 1rem) !important;
+    flex: 1 1 calc(50% - 1rem) !important;
+    min-width: calc(50% - 1rem) !important;
+}
+</style>
+""",
+unsafe_allow_html=True,
+)
+col_c1, col_c2 = st.columns([7,3])
+for line in range(0,len(resultado)):
+    with col_c1:
 
+        
+            df_resultado_proposto = resultado[['Exercise','Now','Proposto']]
             
-                df_resultado_proposto = resultado[['Exercise','Now','Proposto']]
-                
-                st.dataframe(df_resultado_proposto.iloc[[line]].style.format({'Now': '{:.1f}','Proposto': '{:.0f}'}).highlight_between('Proposto',left=0, right=0,color='green').hide(axis="columns"),hide_index=True)
-                
-        with col_c2:
+            st.dataframe(df_resultado_proposto.iloc[[line]].style.format({'Now': '{:.1f}','Proposto': '{:.0f}'}).highlight_between('Proposto',left=0, right=0,color='green').hide(axis="columns"),hide_index=True,width="content")
+            
+    with col_c2:
 
-            if st.button("▶️ Start",key=f'my_button_id_{line}'):
-                
-                horario_fim = datetime.now() + timedelta(seconds=segundos)
+        if st.button("▶️ Start",key=f'my_button_id_{line}'):
+            
+            horario_fim = datetime.now() + timedelta(seconds=segundos)
 
-                for i in range(segundos, -1, -1):
+            for i in range(segundos, -1, -1):
 
-                    mins, secs = divmod(i, 60)
+                mins, secs = divmod(i, 60)
 
-                    placeholder.markdown(
-                        f"""
-                        <h1 style='text-align:center;font-size:80px;'>
-                            {mins:02d}:{secs:02d}
-                        </h1>
+                placeholder.markdown(
+                    f"""
+                    <h1 style='text-align:center;font-size:80px;'>
+                        {mins:02d}:{secs:02d}
+                    </h1>
 
-                        <h3 style='text-align:center;'>
-                            Termina às {horario_fim.strftime("%H:%M:%S")}
-                        </h3>
-                        """,
-                        unsafe_allow_html=True
-                    )
+                    <h3 style='text-align:center;'>
+                        Termina às {horario_fim.strftime("%H:%M:%S")}
+                    </h3>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-                    time.sleep(1)
-            # st.write(f'my_button_id_{line}')
-                # # adiciona nova linha no histórico
-                st.session_state.historico.append(f'my_button_id_{line}')
-            # st.write('')
-            # st.write('')
+                time.sleep(1)
+        # st.write(f'my_button_id_{line}')
+            # # adiciona nova linha no histórico
+            st.session_state.historico.append(f'my_button_id_{line}')
+        # st.write('')
+        # st.write('')
 
-            quantidade = st.session_state.historico.count(f'my_button_id_{line}')
-            if resultado['Series'][line] == quantidade:
+        quantidade = st.session_state.historico.count(f'my_button_id_{line}')
+        if resultado['Series'][line] == quantidade:
 
-            # st.write(quantidade)
-                st.checkbox('done',value=True,key=f'my_checkbox_id_{line}')
-            else:
-                st.checkbox('done',key=f'my_checkbox_id_{line}')
+        # st.write(quantidade)
+            st.checkbox('done',value=True,key=f'my_checkbox_id_{line}')
+        else:
+            st.checkbox('done',key=f'my_checkbox_id_{line}')
 
-        # st.write(resultado['Exercise'][line])
-        # st.write(resultado['Proposto'][line])
+    # st.write(resultado['Exercise'][line])
+    # st.write(resultado['Proposto'][line])
 
-        # st.write(line)
+    # st.write(line)
 
 # with col3:
 #     for line in range(0,len(resultado)):   

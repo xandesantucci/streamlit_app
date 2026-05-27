@@ -51,8 +51,8 @@ with st.sidebar:
         "Sessions:",
         ["🏠 Start"
         #  , "💪​ Gym"
-         , "💵​ Education"
-         , "🛠️ Habilities"
+        #  , "💵​ Education"
+        #  , "🛠️ Habilities"
          , "📊 Analytics"
          , "📞 Contact"]
     )
@@ -460,14 +460,19 @@ elif menu_option == "💵​ Education":
 
 # # Página de habilidades
 elif menu_option == "🛠️ Habilities":
-    st.markdown('<h1 class="section-header">In Developtment</h1>', unsafe_allow_html=True)
     
-
+    st.markdown('<h1 class="section-header">In Developtment</h1>', unsafe_allow_html=True)
+    col_a1, col_a2 = st.columns([1,1])
+    with col_a1:
+        salary_value = st.number_input("Salary",min_value=0.0,value=130.95,step=1.0)
+    with col_a2:
+        year_holidays = st.number_input("Year",min_value=2020,value=2026,step=1)
+    year_holidays = str(year_holidays)
     # Feriados SP
-    feriados = holidays.country_holidays("BR", subdiv="SP")
-
+    feriados_sp = holidays.country_holidays("BR", subdiv="SP")
+    feriados_sp_2 = feriados_sp[f"{year_holidays}-01-01":f"{year_holidays}-12-31"]
     # Criar calendário do ano inteiro
-    datas = pd.date_range("2026-01-01", "2026-12-31")
+    datas = pd.date_range(f"{year_holidays}-01-01", f"{year_holidays}-12-31")
 
     df = pd.DataFrame({"Data": datas})
 
@@ -478,7 +483,7 @@ elif menu_option == "🛠️ Habilities":
     df["FimSemana"] = df["DiaSemana"] >= 5
 
     # Identificar feriado
-    df["Feriado"] = df["Data"].isin(feriados)
+    df["Feriado"] = df["Data"].isin(feriados_sp_2)
 
     # Dias úteis
     df["DiaUtil"] = ~(df["FimSemana"] | df["Feriado"])
@@ -497,28 +502,56 @@ elif menu_option == "🛠️ Habilities":
     # Considerando 8h por dia
     HORAS_DIA = 8
 
-    dias_uteis["HorasMes"] = dias_uteis["DiasUteis"] * HORAS_DIA
+    dias_uteis["Month_Hours"] = dias_uteis["DiasUteis"] * HORAS_DIA
 
-    st.write(dias_uteis)
+    dias_uteis['Gross_Value'] = dias_uteis['Month_Hours'] * salary_value
 
-    feriados_br = holidays.country_holidays("BR")
+    dias_uteis['Net_Value'] = dias_uteis['Gross_Value'] * 0.87
 
-# Feriados estaduais SP (inclui nacionais também)
-    feriados_sp = holidays.country_holidays("BR", subdiv="SP")
+    # st.dataframe(dias_uteis)
+    st.dataframe(dias_uteis.style.format({
+            'Gross_Value': '{:,.2f}',
+            'Net_Value': '{:,.2f}'
+        }),height=(len(dias_uteis) + 1) * 36,hide_index=True)
 
-    feriados_sp_2 = feriados_sp["2024-01-01":"2024-12-31"]
-    feriados_br_2 = feriados_br["2024-01-01":"2024-12-31"]
-    print(feriados_sp_2)
+    df = None
 
-    for feriado in feriados_sp_2:
-        print(feriado)
-    for feriado in feriados_br_2:
-        print(feriado)
-    # df = pd.DataFrame({"Data": datas})
+    try:
+        # Tenta abrir o arquivo da pasta
+        try:
+            df = pd.read_excel('streamlit_app/arquivo_fixo.xlsx')
+        except:
+            df = pd.read_excel('arquivo_fixo.xlsx')
 
-    # df["Feriado"] = df["Data"].isin(feriados_sp_2)
+    except:
+        st.warning("Arquivo não encontrado. Faça upload do Excel.")
 
-    # # df = pd.DataFrame(dados, columns=["Data", "Feriado"])
+        arquivo_upload = st.file_uploader(
+            "Selecione um arquivo Excel",
+            type=["xlsx", "xls"]
+        )
+
+        if arquivo_upload:
+            df = pd.read_excel(arquivo_upload)
+            st.success("Arquivo enviado com sucesso.")
+
+    arquivo_upload = st.file_uploader(
+        "Selecione um arquivo Excel",
+        type=["xlsx", "xls"]
+    )
+
+    if arquivo_upload:
+        df = pd.read_excel(arquivo_upload)
+        st.success("Arquivo enviado com sucesso.")
+    else:
+        try:
+            df = pd.read_excel('streamlit_app/arquivo_fixo.xlsx')
+        except:
+            df = pd.read_excel('arquivo_fixo.xlsx')
+
+    # Mostra dados se existir
+    if df is not None:
+        st.dataframe(df)
 
     # st.dataframe(df, hide_index=True)
 #     profile_data = load_profile_data()
