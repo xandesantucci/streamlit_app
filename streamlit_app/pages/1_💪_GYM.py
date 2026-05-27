@@ -118,18 +118,25 @@ placeholder = st.empty()
 
 
     
-st.markdown(
-"""
+st.markdown("""
 <style>
-[data-testid="column"] {
-    width: calc(50% - 1rem) !important;
-    flex: 1 1 calc(50% - 1rem) !important;
-    min-width: calc(50% - 1rem) !important;
+
+@media (max-width: 768px) {
+
+    [data-testid="stHorizontalBlock"] {
+        flex-direction: column !important;
+    }
+
+    [data-testid="column"] {
+        width: 100% !important;
+        min-width: 100% !important;
+    }
+
 }
+
 </style>
-""",
-unsafe_allow_html=True,
-)
+""", unsafe_allow_html=True)
+
 col_c1, col_c2 = st.columns([7,3])
 for line in range(0,len(resultado)):
     with col_c1:
