@@ -20,30 +20,28 @@ st.markdown('<h1 class="section-header">💵 Financial</h1>', unsafe_allow_html=
 
 col_fin1, col_fin2 = st.columns([1,1])
 with col_fin1:
+
     try:
-        df = pd.read_excel('streamlit_app/arquivo_fixo.xlsx')
+        # df = pd.read_excel('streamlit_app/arquivo_gym.xlsx')
+        df = pd.read_json('streamlit_app/financial.json')
+        
     except:
-        df = pd.read_excel('arquivo_fixo.xlsx')
+        # df = pd.read_excel('arquivo_gym.xlsx')
+        df = pd.read_json('financial.json')
+
 
     # Converter peso
-    df['VALOR'] = (
-        df['VALOR']
-        .str.replace('.', '', regex=False)
-        .str.replace(',', '.', regex=False)
-        .astype(float)
-    )
+    df['value'] = pd.to_numeric(df['value'], errors='coerce')
 
-    df['VALOR_DIVIDE'] = (
-        df['VALOR_DIVIDE']
-        .str.replace('.', '', regex=False)
-        .str.replace(',', '.', regex=False)
-        .astype(float)
-    )
+    df['value_divide'] = df['value'] * df['modifier']
 
-    df = df.sort_values(['ANOMES'],ascending=False)
+    df = df.sort_values(['anomes'],ascending=False)
 
-    df['ANOMES'] = pd.to_datetime(
-    pd.to_numeric(df['ANOMES'], errors='coerce')
+    
+
+
+    df['anomes'] = pd.to_datetime(
+    pd.to_numeric(df['anomes'], errors='coerce')
     .fillna(0)
     .astype(int)
     .astype(str),
@@ -51,32 +49,48 @@ with col_fin1:
     errors='coerce'
     ).dt.strftime('%m/%Y')
 
-    df = df[df['ANOMES'].notna()]
+    df = df[df['anomes'].notna()]
 
-    df['TIPO'] = df['TIPO'].str.lower()
+    df['type'] = df['type'].str.lower()
 
-    col1, col2, col3 = st.columns([1, 1, 1])
+    df_bills = df[~df['type'].isin(['investment', 'extras'])]
+
+    df_extras = df[df['type'].isin(['extras'])]
+
+    col1, col2, col3 = st.columns([0.7, 1, 1])
 
     with col1:
-        list_group = st.selectbox('Mês',options=df['ANOMES'].unique())
+        list_group = st.selectbox('Month',options=df_bills['anomes'].unique())
 
-        df_filtro_1= df[df['ANOMES'] == list_group]
+        df_filtro_1 = df_bills[df_bills['anomes'] == list_group]
+
+        df_filtro_1_extras = df_extras[df_extras['anomes'] == list_group]
 
         mes_anterior = (
         pd.to_datetime(list_group, format='%m/%Y')
         - DateOffset(months=1)
         ).strftime('%m/%Y')
 
-        df_filtro_2 = df[df['ANOMES'] == mes_anterior]
+        df_filtro_2 = df_bills[df_bills['anomes'] == mes_anterior]
 
-    df_ops_1 = df_filtro_1.groupby('ANOMES').sum().reset_index()
+    df_ops_1 = df_filtro_1.groupby('anomes').sum().reset_index()
 
-    df_ops_1 = df_ops_1['VALOR_DIVIDE'].iloc[0]
+    df_ops_1 = df_ops_1['value_divide'].iloc[0]
+
+    df_ops_1_extras = df_filtro_1_extras.groupby('type').sum().reset_index()
+
+    df_ops_1_extras = df_ops_1_extras['value_divide'].iloc[0]
+
+    df_ops_1_extras_detail = ''
+
+    for i in range(0,len(df_filtro_1_extras)):
+
+        df_ops_1_extras_detail = df_ops_1_extras_detail + df_filtro_1_extras['detail'].iloc[i] + ' '
 
     try:
-        df_ops_2 = df_filtro_2.groupby('ANOMES').sum().reset_index()
+        df_ops_2 = df_filtro_2.groupby('anomes').sum().reset_index()
         
-        df_ops_2 = df_ops_2['VALOR_DIVIDE'].iloc[0]
+        df_ops_2 = df_ops_2['value_divide'].iloc[0]
 
     except:
         df_ops_2 = 0
@@ -89,29 +103,29 @@ with col_fin1:
 
     with col2:
 
-        st.metric("Present", f"{df_ops_1:,.2f}", f"{df_ops_1_2}%",delta_color="inverse")
+        st.metric("Present", f"{df_ops_1:,.0f} + {df_ops_1_extras:,.0f} ", f"{df_ops_1_2}%",delta_color="inverse",help=df_ops_1_extras_detail,border=True)
 
     with col3:
 
-        st.metric("Past", f"{df_ops_2:,.2f}")
+        st.metric("Past", f"{df_ops_2:,.2f}",border=True)
 
-    df_filtrado = df[
-    (df['ANOMES'] >= mes_anterior) &
-    (df['ANOMES'] <= list_group)
+    df_filtrado = df_bills[
+    (df_bills['anomes'] >= mes_anterior) &
+    (df_bills['anomes'] <= list_group)
     ]
 
-    df_filtrado = df_filtrado.sort_values(['TIPO', 'ANOMES'])
+    df_filtrado = df_filtrado.sort_values(['type', 'anomes'])
 
-    ultimos = df_filtrado.groupby('TIPO').tail(2)
+    ultimos = df_filtrado.groupby('type').tail(2)
 
-    ultimos['ordem'] = ultimos.groupby('TIPO').cumcount()  + 1
+    ultimos['ordem'] = ultimos.groupby('type').cumcount()  + 1
 
     # Pivotar
     try:
         resultado = ultimos.pivot(
-            index='TIPO',
+            index='type',
             columns='ordem',
-            values='VALOR'
+            values='value'
         ).reset_index()
 
         # Renomear colunas
@@ -127,7 +141,7 @@ with col_fin1:
 
 
     except:
-        resultado = ultimos[['TIPO','VALOR_DIVIDE']]
+        resultado = ultimos[['type','value_divide']]
 
         resultado['Last'] = 0
         resultado['Dif'] = 0
@@ -170,26 +184,26 @@ with col_fin2:
     # Criar calendário do ano inteiro
     datas = pd.date_range(f"{year_holidays}-01-01", f"{year_holidays}-12-31")
 
-    df = pd.DataFrame({"Data": datas})
+    df_dates = pd.DataFrame({"Data": datas})
 
     # Dia da semana (0=segunda, 6=domingo)
-    df["DiaSemana"] = df["Data"].dt.weekday
+    df_dates["DiaSemana"] = df_dates["Data"].dt.weekday
 
     # Identificar fim de semana
-    df["FimSemana"] = df["DiaSemana"] >= 5
+    df_dates["FimSemana"] = df_dates["DiaSemana"] >= 5
 
     # Identificar feriado
-    df["Feriado"] = df["Data"].isin(feriados_sp_2)
+    df_dates["Feriado"] = df_dates["Data"].isin(feriados_sp_2)
 
     # Dias úteis
-    df["DiaUtil"] = ~(df["FimSemana"] | df["Feriado"])
+    df_dates["DiaUtil"] = ~(df_dates["FimSemana"] | df_dates["Feriado"])
 
     # Mês
-    df["Month"] = df["Data"].dt.strftime('%m')
+    df_dates["Month"] = df_dates["Data"].dt.strftime('%m')
 
     # Contagem de dias úteis
     dias_uteis = (
-        df[df["DiaUtil"]]
+        df_dates[df_dates["DiaUtil"]]
         .groupby("Month")
         .size()
         .reset_index(name="Useful_Days")
@@ -215,14 +229,15 @@ with col_fin2:
             'Net_Value': '{:,.2f}'
         }),height=(len(dias_uteis) + 1) * 36,hide_index=True)
 
-df = None
+# st.write(df)
+
+
+
+df_investment = None
 
 try:
     # Tenta abrir o arquivo da pasta
-    try:
-        df = pd.read_excel('streamlit_app/arquivo_fixo.xlsx')
-    except:
-        df = pd.read_excel('arquivo_fixo.xlsx')
+    df_investment = df[df['type'].isin(['investment'])]
 
 except:
     st.warning("Arquivo não encontrado. Faça upload do Excel.")
@@ -233,7 +248,7 @@ except:
     )
 
     if arquivo_upload:
-        df = pd.read_excel(arquivo_upload)
+        df_investment = pd.read_excel(arquivo_upload)
         st.success("Arquivo enviado com sucesso.")
 
 arquivo_upload = st.file_uploader(
@@ -242,14 +257,30 @@ arquivo_upload = st.file_uploader(
 )
 
 if arquivo_upload:
-    df = pd.read_excel(arquivo_upload)
+    df_investment = pd.read_excel(arquivo_upload)
     st.success("Arquivo enviado com sucesso.")
 else:
-    try:
-        df = pd.read_excel('streamlit_app/arquivo_fixo.xlsx')
-    except:
-        df = pd.read_excel('arquivo_fixo.xlsx')
+    df_investment = df[df['type'].isin(['investment'])]
 
-# Mostra dados se existir
-if df is not None:
-    st.dataframe(df)
+
+investment_goal = st.number_input("Goal/per month",min_value=5000,value=30000,step=100)        
+
+df_investment['year'] = df_investment['anomes'].str[3:]
+
+df_investment['month'] = df_investment['anomes'].str[:2]
+
+resultado = pd.pivot_table(
+    df_investment,
+    index='year',
+    columns='month',
+    values='value',
+    aggfunc='sum'
+).reset_index()
+
+st.dataframe(
+    resultado.style.format(
+        {col: "{:,.2f}" for col in resultado.select_dtypes(include='number').columns}
+    ),
+    hide_index=True
+)
+

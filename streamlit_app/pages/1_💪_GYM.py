@@ -17,19 +17,18 @@ st.set_page_config(
 st.markdown('<h1 class="section-header">💪 Gym</h1>', unsafe_allow_html=True)
 
 try:
-    df = pd.read_excel('streamlit_app/arquivo_gym.xlsx')
+    # df = pd.read_excel('streamlit_app/arquivo_gym.xlsx')
+    df = pd.read_json('streamlit_app/gym.json')
+    
 except:
-    df = pd.read_excel('arquivo_gym.xlsx')
+    # df = pd.read_excel('arquivo_gym.xlsx')
+    df = pd.read_json('gym.json')
 
 # Converter data
 # df['dt_ymd'] = pd.to_datetime(df['dt_ymd'], dayfirst=True)
 
 # Converter peso
-df['weight'] = (
-    df['weight']
-    .str.replace(',', '.', regex=False)
-    .astype(float)
-)
+df['weight'] = (pd.to_numeric(df['weight'], errors='coerce'))
 
 list_group = st.selectbox("Select:", np.sort(df['group'].unique()))
 
@@ -51,19 +50,22 @@ with col1:
 ultimos = df.groupby('exercise').tail(3)
 
 # Criar ranking dentro do exercício
-ultimos['ordem'] = ultimos.groupby(['exercise','series']).cumcount() + 1
+ultimos['ordem'] = ultimos.groupby(['exercise','series','exercise_order']).cumcount() + 1
 
 # Pivotar
 resultado = ultimos.pivot(
-    index=['exercise','series'],
+    index=['exercise','series','exercise_order'],
     columns='ordem',
     values='weight'
 ).reset_index()
+
+resultado = resultado.sort_values(['exercise_order']).reset_index(drop=True)
 
 # Renomear colunas
 resultado.columns = [
     'Exercise',
     'Series',
+    'exercise_order',
     '3 Weeks',
     'Last',
     'Now'
@@ -114,41 +116,11 @@ step=1
 )
 placeholder = st.empty()
 
-# st.write(st.session_state.historico)
 
 
-    
-st.markdown("""
-<style>
+radio_exercise = st.radio('Radio:',resultado['Exercise'].unique())
 
-@media (max-width: 768px) {
-
-    [data-testid="stHorizontalBlock"] {
-        flex-direction: column !important;
-    }
-
-    [data-testid="column"] {
-        width: 100% !important;
-        min-width: 100% !important;
-    }
-
-}
-
-</style>
-""", unsafe_allow_html=True)
-
-col_c1, col_c2 = st.columns([7,3])
-for line in range(0,len(resultado)):
-    with col_c1:
-
-        
-            df_resultado_proposto = resultado[['Exercise','Now','Proposto']]
-            
-            st.dataframe(df_resultado_proposto.iloc[[line]].style.format({'Now': '{:.1f}','Proposto': '{:.0f}'}).highlight_between('Proposto',left=0, right=0,color='green').hide(axis="columns"),hide_index=True,width="content")
-            
-    with col_c2:
-
-        if st.button("▶️ Start",key=f'my_button_id_{line}'):
+if st.button("▶️ Start",key=f'my_button_id_{radio_exercise}'):
             
             horario_fim = datetime.now() + timedelta(seconds=segundos)
 
@@ -172,17 +144,65 @@ for line in range(0,len(resultado)):
                 time.sleep(1)
         # st.write(f'my_button_id_{line}')
             # # adiciona nova linha no histórico
-            st.session_state.historico.append(f'my_button_id_{line}')
-        # st.write('')
-        # st.write('')
+            st.session_state.historico.append(f'my_button_id_{radio_exercise}')
 
-        quantidade = st.session_state.historico.count(f'my_button_id_{line}')
-        if resultado['Series'][line] == quantidade:
+quantidade = st.session_state.historico.count(f'my_button_id_{radio_exercise}')
 
-        # st.write(quantidade)
-            st.checkbox('done',value=True,key=f'my_checkbox_id_{line}')
-        else:
-            st.checkbox('done',key=f'my_checkbox_id_{line}')
+df_result = resultado[['Exercise','Now','Proposto']]
+df_result = df_result[df_result['Exercise'] == radio_exercise]
+df_result['Quantidade'] = quantidade
+
+st.dataframe(df_result,hide_index=True)
+
+# col_c1, col_c2 = st.columns([7,3])
+# for line in range(0,len(resultado)):
+#     with col_c1:
+
+        
+#             df_resultado_proposto = resultado[['Exercise','Now','Proposto']]
+            
+#             st.dataframe(df_resultado_proposto.iloc[[line]].style.format({'Now': '{:.1f}','Proposto': '{:.0f}'}).highlight_between('Proposto',left=0, right=0,color='green').hide(axis="columns"),hide_index=True,width="content")
+            
+#     with col_c2:
+
+#         if st.button("▶️ Start",key=f'my_button_id_{radio_exercise}'):
+            
+#             horario_fim = datetime.now() + timedelta(seconds=segundos)
+
+#             for i in range(segundos, -1, -1):
+
+#                 mins, secs = divmod(i, 60)
+
+#                 placeholder.markdown(
+#                     f"""
+#                     <h1 style='text-align:center;font-size:80px;'>
+#                         {mins:02d}:{secs:02d}
+#                     </h1>
+
+#                     <h3 style='text-align:center;'>
+#                         Termina às {horario_fim.strftime("%H:%M:%S")}
+#                     </h3>
+#                     """,
+#                     unsafe_allow_html=True
+#                 )
+
+#                 time.sleep(1)
+#         # st.write(f'my_button_id_{line}')
+#             # # adiciona nova linha no histórico
+#             st.session_state.historico.append(f'my_button_id_{radio_exercise}')
+#         # st.write('')
+#         # st.write('')
+
+#         quantidade = st.session_state.historico.count(f'my_button_id_{radio_exercise}')
+
+#         st.write(quantidade)
+#         st.write(resultado['Series'][line])
+#         if resultado['Series'][line] == quantidade:
+
+#         # st.write(quantidade)
+#             st.checkbox('done',value=True,key=f'my_checkbox_id_{radio_exercise}')
+#         else:
+#             st.checkbox('done',key=f'my_checkbox_id_{radio_exercise}')
 
     # st.write(resultado['Exercise'][line])
     # st.write(resultado['Proposto'][line])
