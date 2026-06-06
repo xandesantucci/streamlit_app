@@ -9,6 +9,18 @@ from utils import st_write_justify
 import time
 import holidays
 
+pg = st.navigation([
+    st.Page("pages/1_💪_GYM.py", title="Dashboard"),
+    st.Page("pages/2_💵​_Financial.py", title="Relatórios"),
+])
+
+pg.run()
+
+with st.sidebar:
+    # st.image("https://cdn-icons-png.flaticon.com/512/174/174857.png", width=50)
+    st.link_button('DEV: Alexandre Santucci','https://www.linkedin.com/in/alexandre-santucci-breves-oliveira/')
+
+
 # Configuração da página
 # st.set_page_config(
 #     page_title="Professional Hub",

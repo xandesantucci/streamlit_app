@@ -14,6 +14,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+
 st.markdown('<h1 class="section-header">💪 Gym</h1>', unsafe_allow_html=True)
 
 try:
@@ -44,7 +45,11 @@ col1, col2 = st.columns([2, 1.5])
 with col1:
     
     df_graph = df.sort_values(['exercise', 'dt_ymd'])
-    st.line_chart(df_graph,x='dt_ymd',y='weight',color='exercise')
+
+    df_graph['dt_ymd'] = pd.to_datetime(df_graph['dt_ymd'])
+    df_graph['ds_dt_ymd'] = df_graph['dt_ymd'].dt.strftime('%d/%m/%y')
+
+    st.line_chart(df_graph,x='ds_dt_ymd',y='weight',color='exercise',x_label='Date',y_label='Weight')
 
 # Pegar últimos 2 registros de cada exercício
 ultimos = df.groupby('exercise').tail(3)
@@ -96,33 +101,66 @@ with col2:
     'Dif': '{:.1f}'
 }).highlight_between('Dif',left=0.1, right=10,color='green'),hide_index=True,height=(len(resultado_dataframe) + 1) * 36)
 
+with st.container():
 
-st.title("🏋️ Timer de Descanso")
+    col1, col2 = st.columns([1, 3])
 
-# session state para guardar histórico
+    with col2:
+        st.title("🏋️ Timer de Descanso")
+
+    with col1:
+        segundos = st.number_input(
+            "Break",
+            min_value=0,
+            value=60,
+            step=1,
+            label_visibility="collapsed"
+        )
+
+    # st.title("🏋️ Timer de Descanso")
+
+
+    # segundos = st.number_input(
+    #     "Break",
+    #     min_value=0,
+    #     value=60,
+    #     step=1
+    # )
+
 if "historico" not in st.session_state:
     st.session_state.historico = []
 
+try:
+    # st.write(st.session_state.historico)  
+
+    for exercise in resultado['Exercise'].unique():
+
+        # st.write(st.session_state.historico.count(f'my_button_id_{exercise}'))
+        
+        df_result = resultado[resultado['Exercise'] == exercise].reset_index()
+
+        data = df_result['Series'].iloc[0]
+
+        # st.write(data)
+
+        if data == st.session_state.historico.count(f'my_button_id_{exercise}'):
+             
+             resultado = resultado[resultado['Exercise'] != exercise]
 
 
-# ultimos_aux = df.groupby('exercise').tail(1)
-# st.write(ultimos_aux)
 
-segundos = st.number_input(
-"Break",
-min_value=0,
-value=60,
-step=1
-)
-placeholder = st.empty()
+        # if exercise_count == 
 
-
+except:
+     st.write('no session')
 
 radio_exercise = st.radio('Radio:',resultado['Exercise'].unique())
 
+placeholder = st.empty()
+
 if st.button("▶️ Start",key=f'my_button_id_{radio_exercise}'):
             
-            horario_fim = datetime.now() + timedelta(seconds=segundos)
+            horario_fim = datetime.now() + timedelta(seconds=segundos) - timedelta(hours=3)
 
             for i in range(segundos, -1, -1):
 
@@ -130,7 +168,7 @@ if st.button("▶️ Start",key=f'my_button_id_{radio_exercise}'):
 
                 placeholder.markdown(
                     f"""
-                    <h1 style='text-align:center;font-size:80px;'>
+                    <h1 style='text-align:center;font-size:50px;'>
                         {mins:02d}:{secs:02d}
                     </h1>
 

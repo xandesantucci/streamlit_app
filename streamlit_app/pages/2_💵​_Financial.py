@@ -77,16 +77,19 @@ with col_fin1:
 
     df_ops_1 = df_ops_1['value_divide'].iloc[0]
 
+    
+
     df_ops_1_extras = df_filtro_1_extras.groupby('type').sum().reset_index()
+    try:
+        df_ops_1_extras = df_ops_1_extras['value_divide'].iloc[0]
 
-    df_ops_1_extras = df_ops_1_extras['value_divide'].iloc[0]
+        df_ops_1_extras_detail = ''
 
-    df_ops_1_extras_detail = ''
+        for i in range(0,len(df_filtro_1_extras)):
 
-    for i in range(0,len(df_filtro_1_extras)):
-
-        df_ops_1_extras_detail = df_ops_1_extras_detail + df_filtro_1_extras['detail'].iloc[i] + ' '
-
+            df_ops_1_extras_detail = df_ops_1_extras_detail + df_filtro_1_extras['detail'].iloc[i] + ' '
+    except:
+        df_ops_1_extras = None
     try:
         df_ops_2 = df_filtro_2.groupby('anomes').sum().reset_index()
         
@@ -102,12 +105,14 @@ with col_fin1:
         df_ops_1_2 = 0.0
 
     with col2:
-
-        st.metric("Present", f"{df_ops_1:,.0f} + {df_ops_1_extras:,.0f} ", f"{df_ops_1_2}%",delta_color="inverse",help=df_ops_1_extras_detail,border=True)
+        try:
+            st.metric("Present", f"{df_ops_1:,.0f} + {df_ops_1_extras:,.0f} ", f"{df_ops_1_2}%",delta_color="inverse",help=df_ops_1_extras_detail,border=True)
+        except:
+            st.metric("Present", f"{df_ops_1:,.0f}", f"{df_ops_1_2}%",delta_color="inverse",border=True)
 
     with col3:
 
-        st.metric("Past", f"{df_ops_2:,.2f}",border=True)
+        st.metric("Past", f"{df_ops_2:,.0f}",border=True)
 
     df_filtrado = df_bills[
     (df_bills['anomes'] >= mes_anterior) &
@@ -185,6 +190,8 @@ with col_fin2:
     datas = pd.date_range(f"{year_holidays}-01-01", f"{year_holidays}-12-31")
 
     df_dates = pd.DataFrame({"Data": datas})
+
+    st.write(feriados_sp_2)
 
     # Dia da semana (0=segunda, 6=domingo)
     df_dates["DiaSemana"] = df_dates["Data"].dt.weekday
