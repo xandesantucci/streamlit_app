@@ -101,22 +101,32 @@ with col2:
     'Dif': '{:.1f}'
 }).highlight_between('Dif',left=0.1, right=10,color='green'),hide_index=True,height=(len(resultado_dataframe) + 1) * 36)
 
-with st.container():
+# with st.container():
 
-    col1, col2 = st.columns([1, 3])
+#     col1, col2 = st.columns([1, 3])
 
-    with col2:
-        st.title("🏋️ Timer de Descanso")
+#     with col2:
+#         st.title("🏋️ Timer de Descanso")
 
-    with col1:
-        segundos = st.number_input(
-            "Break",
-            min_value=0,
-            value=60,
-            step=1,
-            label_visibility="collapsed"
-        )
+#     with col1:
+#         segundos = st.number_input(
+#             "Break",
+#             min_value=0,
+#             value=60,
+#             step=1,
+#             label_visibility="collapsed"
+#         )
+col1, col2 = st.columns([4, 1])
 
+with col1:
+    st.markdown("### 🏋️ Timer de Descanso")
+
+with col2:
+    segundos = st.number_input(
+        "Break",
+        value=60,
+        label_visibility="collapsed"
+    )
     # st.title("🏋️ Timer de Descanso")
 
 
