@@ -2284,7 +2284,7 @@
     "exercise": "supino inclinado barra",
     "exercise_order": 1,
     "series": 3,
-    "rep": "",
-    "weight": ""
+    "rep": 10,
+    "weight": 20
   }
 ]
