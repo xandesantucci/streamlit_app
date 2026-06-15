@@ -2286,5 +2286,16 @@
     "series": 3,
     "rep": 10,
     "weight": 20
+  },
+  {
+    "dt_ymd": "",
+    "number": "",
+    "group": "",
+    "type": "",
+    "exercise": "supino reto",
+    "exercise_order": "",
+    "series": "",
+    "rep": "",
+    "weight": ""
   }
 ]
