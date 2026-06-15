@@ -1,194 +1,5 @@
 [
   {
-    "anomes": 202603,
-    "type": "Condominio",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 1521
-  },
-  {
-    "anomes": 202603,
-    "type": "Luz",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 86.41
-  },
-  {
-    "anomes": 202603,
-    "type": "Gas",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 137.58
-  },
-  {
-    "anomes": 202603,
-    "type": "Empregada",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 1000
-  },
-  {
-    "anomes": 202603,
-    "type": "Internet",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 104
-  },
-  {
-    "anomes": 202603,
-    "type": "Meli",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 74.9
-  },
-  {
-    "anomes": 202603,
-    "type": "Prime",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 34.9
-  },
-  {
-    "anomes": 202603,
-    "type": "Comida",
-    "detail": "",
-    "modifier": 0.5,
-    "value": 1480.0900000000001
-  },
-  {
-    "anomes": 202603,
-    "type": "Academia",
-    "detail": "",
-    "modifier": 1,
-    "value": 550
-  },
-  {
-    "anomes": 202604,
-    "type": "Condominio",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 1521
-  },
-  {
-    "anomes": 202604,
-    "type": "Luz",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 113.94
-  },
-  {
-    "anomes": 202604,
-    "type": "Gas",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 183.99
-  },
-  {
-    "anomes": 202604,
-    "type": "Empregada",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 750
-  },
-  {
-    "anomes": 202604,
-    "type": "Internet",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 120
-  },
-  {
-    "anomes": 202604,
-    "type": "Meli",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 74.9
-  },
-  {
-    "anomes": 202604,
-    "type": "Prime",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 34.9
-  },
-  {
-    "anomes": 202604,
-    "type": "Comida",
-    "detail": "",
-    "modifier": 0.5,
-    "value": 649.77
-  },
-  {
-    "anomes": 202604,
-    "type": "Academia",
-    "detail": "",
-    "modifier": 1,
-    "value": 550
-  },
-  {
-    "anomes": 202605,
-    "type": "Condominio",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 1521
-  },
-  {
-    "anomes": 202605,
-    "type": "academia",
-    "detail": "",
-    "modifier": 1,
-    "value": 550
-  },
-  {
-    "anomes": 202605,
-    "type": "Empregada",
-    "detail": "",
-    "modifier": 0.5,
-    "value": 1000
-  },
-  {
-    "anomes": 202605,
-    "type": "meli",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 74.9
-  },
-  {
-    "anomes": 202605,
-    "type": "prime",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 34.9
-  },
-  {
-    "anomes": 202605,
-    "type": "comida",
-    "detail": "",
-    "modifier": 0.5,
-    "value": 903.34
-  },
-  {
-    "anomes": 202605,
-    "type": "internet",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 113
-  },
-  {
-    "anomes": 202605,
-    "type": "gas",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 129.49
-  },
-  {
-    "anomes": 202605,
-    "type": "luz",
-    "detail": "",
-    "modifier": 0.6,
-    "value": 71.88
-  },
-  {
     "anomes": 202501,
     "type": "investment",
     "detail": "",
@@ -288,6 +99,69 @@
   },
   {
     "anomes": 202603,
+    "type": "Condominio",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 1521
+  },
+  {
+    "anomes": 202603,
+    "type": "Luz",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 86.41
+  },
+  {
+    "anomes": 202603,
+    "type": "Gas",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 137.58
+  },
+  {
+    "anomes": 202603,
+    "type": "Empregada",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 1000
+  },
+  {
+    "anomes": 202603,
+    "type": "Internet",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 104
+  },
+  {
+    "anomes": 202603,
+    "type": "Meli",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 74.9
+  },
+  {
+    "anomes": 202603,
+    "type": "Prime",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 34.9
+  },
+  {
+    "anomes": 202603,
+    "type": "Comida",
+    "detail": "",
+    "modifier": 0.5,
+    "value": 1480.0900000000001
+  },
+  {
+    "anomes": 202603,
+    "type": "Academia",
+    "detail": "",
+    "modifier": 1,
+    "value": 550
+  },
+  {
+    "anomes": 202603,
     "type": "investment",
     "detail": "",
     "modifier": 1,
@@ -295,10 +169,213 @@
   },
   {
     "anomes": 202604,
+    "type": "Condominio",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 1521
+  },
+  {
+    "anomes": 202604,
+    "type": "Luz",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 113.94
+  },
+  {
+    "anomes": 202604,
+    "type": "Gas",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 183.99
+  },
+  {
+    "anomes": 202604,
+    "type": "Empregada",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 750
+  },
+  {
+    "anomes": 202604,
+    "type": "Internet",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 120
+  },
+  {
+    "anomes": 202604,
+    "type": "Meli",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 74.9
+  },
+  {
+    "anomes": 202604,
+    "type": "Prime",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 34.9
+  },
+  {
+    "anomes": 202604,
+    "type": "Comida",
+    "detail": "",
+    "modifier": 0.5,
+    "value": 649.77
+  },
+  {
+    "anomes": 202604,
+    "type": "Academia",
+    "detail": "",
+    "modifier": 1,
+    "value": 550
+  },
+  {
+    "anomes": 202604,
     "type": "investment",
     "detail": "testa",
     "modifier": 1,
     "value": 17000
+  },
+  {
+    "anomes": 202605,
+    "type": "Condominio",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 1521
+  },
+  {
+    "anomes": 202605,
+    "type": "academia",
+    "detail": "",
+    "modifier": 1,
+    "value": 550
+  },
+  {
+    "anomes": 202605,
+    "type": "Empregada",
+    "detail": "",
+    "modifier": 0.5,
+    "value": 1000
+  },
+  {
+    "anomes": 202605,
+    "type": "meli",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 74.9
+  },
+  {
+    "anomes": 202605,
+    "type": "prime",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 34.9
+  },
+  {
+    "anomes": 202605,
+    "type": "comida",
+    "detail": "",
+    "modifier": 0.5,
+    "value": 903.34
+  },
+  {
+    "anomes": 202605,
+    "type": "internet",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 113
+  },
+  {
+    "anomes": 202605,
+    "type": "gas",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 129.49
+  },
+  {
+    "anomes": 202605,
+    "type": "luz",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 71.88
+  },
+  {
+    "anomes": 202605,
+    "type": "investment",
+    "detail": "teste",
+    "modifier": 1,
+    "value": 13000
+  },
+  {
+    "anomes": 202605,
+    "type": "extras",
+    "detail": "televisão",
+    "modifier": 0.5,
+    "value": 3249
+  },
+  {
+    "anomes": 202605,
+    "type": "Condominio",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 1521
+  },
+  {
+    "anomes": 202605,
+    "type": "academia",
+    "detail": "",
+    "modifier": 1,
+    "value": 550
+  },
+  {
+    "anomes": 202605,
+    "type": "Empregada",
+    "detail": "",
+    "modifier": 0.5,
+    "value": 1000
+  },
+  {
+    "anomes": 202605,
+    "type": "meli",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 74.9
+  },
+  {
+    "anomes": 202605,
+    "type": "prime",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 34.9
+  },
+  {
+    "anomes": 202605,
+    "type": "comida",
+    "detail": "",
+    "modifier": 0.5,
+    "value": 903.34
+  },
+  {
+    "anomes": 202605,
+    "type": "internet",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 113
+  },
+  {
+    "anomes": 202605,
+    "type": "gas",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 129.49
+  },
+  {
+    "anomes": 202605,
+    "type": "luz",
+    "detail": "",
+    "modifier": 0.6,
+    "value": 71.88
   },
   {
     "anomes": 202605,
