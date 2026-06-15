@@ -2288,9 +2288,9 @@
     "weight": 20
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-08T03:00:00.000Z",
+    "number": 2,
+    "group": "A",
     "type": "peito",
     "exercise": "supino reto",
     "exercise_order": 2,
@@ -2299,9 +2299,9 @@
     "weight": 20
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-08T03:00:00.000Z",
+    "number": 2,
+    "group": "A",
     "type": "peito",
     "exercise": "crucifixo carga",
     "exercise_order": 3,
@@ -2310,9 +2310,9 @@
     "weight": 12.5
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-08T03:00:00.000Z",
+    "number": 2,
+    "group": "A",
     "type": "peito",
     "exercise": "paralela",
     "exercise_order": 4,
@@ -2321,9 +2321,9 @@
     "weight": ""
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-08T03:00:00.000Z",
+    "number": 2,
+    "group": "A",
     "type": "peito",
     "exercise": "cross polia barra",
     "exercise_order": 5,
@@ -2332,9 +2332,9 @@
     "weight": 8
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-08T03:00:00.000Z",
+    "number": 2,
+    "group": "A",
     "type": "triceps",
     "exercise": "triceps frances unilateral cross",
     "exercise_order": 6,
@@ -2343,9 +2343,9 @@
     "weight": 8
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-08T03:00:00.000Z",
+    "number": 2,
+    "group": "A",
     "type": "triceps",
     "exercise": "triceps corda falha",
     "exercise_order": 7,
@@ -2354,9 +2354,9 @@
     "weight": 20
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-08T03:00:00.000Z",
+    "number": 2,
+    "group": "A",
     "type": "triceps",
     "exercise": "triceps banco",
     "exercise_order": 8,
@@ -2365,9 +2365,9 @@
     "weight": ""
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-08T03:00:00.000Z",
+    "number": 2,
+    "group": "A",
     "type": "abdominal",
     "exercise": "abdominal prancha lateral",
     "exercise_order": 9,
@@ -2376,9 +2376,9 @@
     "weight": ""
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-08T03:00:00.000Z",
+    "number": 2,
+    "group": "A",
     "type": "abdominal",
     "exercise": "abdominal infra paralela com peso",
     "exercise_order": 10,
