@@ -309,13 +309,6 @@
   },
   {
     "anomes": 202605,
-    "type": "extras",
-    "detail": "televisão",
-    "modifier": 0.5,
-    "value": 3249
-  },
-  {
-    "anomes": 202605,
     "type": "Condominio",
     "detail": "",
     "modifier": 0.6,
@@ -361,7 +354,7 @@
     "type": "internet",
     "detail": "",
     "modifier": 0.6,
-    "value": 113
+    "value": 103
   },
   {
     "anomes": 202605,
