@@ -2293,7 +2293,7 @@
     "group": "",
     "type": "",
     "exercise": "supino reto",
-    "exercise_order": "",
+    "exercise_order": 1,
     "series": "",
     "rep": "",
     "weight": ""
@@ -2304,7 +2304,7 @@
     "group": "",
     "type": "",
     "exercise": "crucifixo carga",
-    "exercise_order": "",
+    "exercise_order": 1,
     "series": "",
     "rep": "",
     "weight": ""
@@ -2315,7 +2315,7 @@
     "group": "",
     "type": "",
     "exercise": "paralela",
-    "exercise_order": "",
+    "exercise_order": 1,
     "series": "",
     "rep": "",
     "weight": ""
@@ -2326,7 +2326,7 @@
     "group": "",
     "type": "",
     "exercise": "cross polia barra",
-    "exercise_order": "",
+    "exercise_order": 1,
     "series": "",
     "rep": "",
     "weight": ""
@@ -2337,7 +2337,7 @@
     "group": "",
     "type": "",
     "exercise": "triceps frances unilateral cross",
-    "exercise_order": "",
+    "exercise_order": 1,
     "series": "",
     "rep": "",
     "weight": ""
@@ -2348,7 +2348,7 @@
     "group": "",
     "type": "",
     "exercise": "triceps corda falha",
-    "exercise_order": "",
+    "exercise_order": 1,
     "series": "",
     "rep": "",
     "weight": ""
@@ -2359,7 +2359,7 @@
     "group": "",
     "type": "",
     "exercise": "triceps banco",
-    "exercise_order": "",
+    "exercise_order": 1,
     "series": "",
     "rep": "",
     "weight": ""
@@ -2370,7 +2370,7 @@
     "group": "",
     "type": "",
     "exercise": "abdominal prancha lateral",
-    "exercise_order": "",
+    "exercise_order": 1,
     "series": "",
     "rep": "",
     "weight": ""
@@ -2381,7 +2381,7 @@
     "group": "",
     "type": "",
     "exercise": "abdominal infra paralela com peso",
-    "exercise_order": "",
+    "exercise_order": 1,
     "series": "",
     "rep": "",
     "weight": ""
