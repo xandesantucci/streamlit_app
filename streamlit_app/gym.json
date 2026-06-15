@@ -2383,7 +2383,7 @@
     "exercise": "abdominal infra paralela com peso",
     "exercise_order": 10,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   }
 ]
