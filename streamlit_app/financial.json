@@ -233,7 +233,7 @@
   {
     "anomes": 202604,
     "type": "investment",
-    "detail": "testa",
+    "detail": "",
     "modifier": 1,
     "value": 17000
   },
@@ -303,7 +303,7 @@
   {
     "anomes": 202605,
     "type": "investment",
-    "detail": "teste",
+    "detail": "",
     "modifier": 1,
     "value": 13000
   },
@@ -373,7 +373,7 @@
   {
     "anomes": 202605,
     "type": "investment",
-    "detail": "teste",
+    "detail": "",
     "modifier": 1,
     "value": 13000
   },
