@@ -340,14 +340,14 @@
     "type": "prime",
     "detail": "",
     "modifier": 0.6,
-    "value": 34.9
+    "value": 19.9
   },
   {
     "anomes": 202606,
     "type": "comida",
     "detail": "",
     "modifier": 0.5,
-    "value": 903.34
+    "value": 1583.73
   },
   {
     "anomes": 202606,
@@ -372,16 +372,30 @@
   },
   {
     "anomes": 202606,
-    "type": "investment",
-    "detail": "",
-    "modifier": 1,
-    "value": 13000
+    "type": "extras",
+    "detail": "televisão",
+    "modifier": 0.5,
+    "value": 3278.89
   },
   {
     "anomes": 202606,
     "type": "extras",
-    "detail": "televisão",
+    "detail": "restaurantes",
     "modifier": 0.5,
-    "value": 3249
+    "value": 1962.78
+  },
+  {
+    "anomes": 202606,
+    "type": "extras",
+    "detail": "passagem rio",
+    "modifier": 0.5,
+    "value": 124.88
+  },
+  {
+    "anomes": 202606,
+    "type": "extras",
+    "detail": "Mercado Livre",
+    "modifier": 0.5,
+    "value": 142.84
   }
 ]
