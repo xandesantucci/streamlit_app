@@ -2282,7 +2282,7 @@
     "group": "A",
     "type": "peito",
     "exercise": "supino inclinado barra",
-    "exercise_order": "",
+    "exercise_order": 1,
     "series": "",
     "rep": "",
     "weight": ""
