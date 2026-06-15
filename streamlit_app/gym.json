@@ -2482,5 +2482,17 @@
     "series": 3,
     "rep": 15,
     "weight": 200
+  },
+  {
+    "dt_ymd": "2026-06-08T03:00:00.000Z",
+    "number": "",
+    "group": "",
+    "sk_exercise": "",
+    "type": "",
+    "exercise": "",
+    "exercise_order": "",
+    "series": "",
+    "rep": "",
+    "weight": ""
   }
 ]
