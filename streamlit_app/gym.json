@@ -2306,7 +2306,7 @@
     "exercise": "crucifixo carga",
     "exercise_order": 3,
     "series": 3,
-    "rep": 1,
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2317,7 +2317,7 @@
     "exercise": "paralela",
     "exercise_order": 4,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
