@@ -2,9 +2,10 @@ import streamlit as st
 import pandas as pd
 # from pandas.tseries.offsets import DateOffset
 from datetime import datetime, timedelta
-from utils import st_write_justify
+from utils import st_write_justify,update_github_json
 import time
 import numpy as np
+import plotly.express as px
 
 st.set_page_config(
 
@@ -25,31 +26,30 @@ except:
     # df = pd.read_excel('arquivo_gym.xlsx')
     df = pd.read_json('gym.json')
 
+df['dt_ymd'] = pd.to_datetime(df['dt_ymd'],format='mixed',utc=True)
+df['weight'] = (pd.to_numeric(df['weight'], errors='coerce'))
 # Converter data
 # df['dt_ymd'] = pd.to_datetime(df['dt_ymd'], dayfirst=True)
 
-# Converter peso
-df['weight'] = (pd.to_numeric(df['weight'], errors='coerce'))
-
-list_group = st.selectbox("Select:", np.sort(df['group'].unique()))
-
-df = df[df['group'] == list_group]
-
-# Ordenar
-# df = df.sort_values(['exercise', 'dt_ymd'])
-
-
-
-col1, col2 = st.columns([2, 1.5])
-    
+col1, col2, col3 = st.columns([1, 1, 1])
 with col1:
-    
-    df_graph = df.sort_values(['exercise', 'dt_ymd'])
+    number_group = st.selectbox("Training:", np.sort(df['number'].unique())[::-1])
 
-    df_graph['dt_ymd'] = pd.to_datetime(df_graph['dt_ymd'])
-    df_graph['ds_dt_ymd'] = df_graph['dt_ymd'].dt.strftime('%d/%m/%y')
 
-    st.line_chart(df_graph,x='ds_dt_ymd',y='weight',color='exercise',x_label='Date',y_label='Weight')
+    df = df[df['number'] == number_group]
+
+with col2:
+    list_group = st.selectbox("Series:", np.sort(df['group'].unique()))
+
+    df = df[df['group'] == list_group]
+
+
+with col3:
+
+    segundos = st.number_input("🏋️ Break",value=60,step=5)
+
+
+
 
 # Pegar últimos 2 registros de cada exercício
 ultimos = df.groupby('exercise').tail(3)
@@ -66,79 +66,63 @@ resultado = ultimos.pivot(
 
 resultado = resultado.sort_values(['exercise_order']).reset_index(drop=True)
 
-# Renomear colunas
-resultado.columns = [
-    'Exercise',
-    'Series',
-    'exercise_order',
-    '3 Weeks',
-    'Last',
-    'Now'
-]
+
+try:
+    # Renomear colunas
+    resultado.columns = [
+        'Exercise',
+        'Series',
+        'exercise_order',
+        '3 Weeks',
+        'Last',
+        'Now'
+    ]
+except:
+    try:
+        resultado.columns = [
+            'Exercise',
+            'Series',
+            'exercise_order',
+            'Last',
+            'Now'
+        ]
+    except:
+        resultado.columns = [
+            'Exercise',
+            'Series',
+            'exercise_order',
+            'Now'
+        ]
 
 resultado['Dif'] = resultado['Now'] - resultado['Last']
 
-resultado['Proposto'] = np.where(
-    resultado['Dif'] == 0,
-    resultado['Now'] - resultado['3 Weeks'],
-    resultado['Dif']
-)
+try:
+    resultado['Proposition'] = np.where(
+        resultado['Dif'] == 0,
+        (resultado['Now'] - resultado['3 Weeks']),
+        resultado['Dif']
+    )
+except:
+    resultado['Proposition'] = 0
 
-# resultado['Cap'] = np.where(resultado['Proposto'] == 0,'Aumenta','')
+resultado['Proposition'] = np.where(
+    resultado['Proposition'] == 0,
+    resultado['Now'] * 1.1,
+    resultado['Now']
+)
+# else:
+#     resultado['Proposition'] = resultado['Proposition'] + resultado['Now']
 
 resultado['Exercise'] = resultado['Exercise'].str.capitalize()
 
-# resultado[['3 Weeks','Last', 'Now', 'Dif']] = resultado[['3 Weeks','Last', 'Now', 'Dif']].round(1)
-
-resultado_dataframe = resultado[['Exercise','3 Weeks','Last', 'Now', 'Dif']]
-
-with col2:
-
-    st.dataframe(resultado_dataframe.style.format({
-    '3 Weeks': '{:.1f}',
-    'Last': '{:.1f}',
-    'Now': '{:.1f}',
-    'Dif': '{:.1f}'
-}).highlight_between('Dif',left=0.1, right=10,color='green'),hide_index=True,height=(len(resultado_dataframe) + 1) * 36)
-
-# with st.container():
-
-#     col1, col2 = st.columns([1, 3])
-
-#     with col2:
-#         st.title("🏋️ Timer de Descanso")
-
-#     with col1:
-#         segundos = st.number_input(
-#             "Break",
-#             min_value=0,
-#             value=60,
-#             step=1,
-#             label_visibility="collapsed"
-#         )
-col1, col2 = st.columns([4, 1])
-
-with col1:
-    st.markdown("### 🏋️ Timer de Descanso")
-
-with col2:
-    segundos = st.number_input(
-        "Break",
-        value=60,
-        label_visibility="collapsed"
-    )
-    # st.title("🏋️ Timer de Descanso")
 
 
-    # segundos = st.number_input(
-    #     "Break",
-    #     min_value=0,
-    #     value=60,
-    #     step=1
-    # )
+
 
 if "historico" not in st.session_state:
     st.session_state.historico = []
+
+
 
 try:
     # st.write(st.session_state.historico)  
@@ -151,15 +135,16 @@ try:
 
         data = df_result['Series'].iloc[0]
 
+        
         # st.write(data)
 
         if data == st.session_state.historico.count(f'my_button_id_{exercise}'):
+
+            
              
-             resultado = resultado[resultado['Exercise'] != exercise]
+            resultado = resultado[resultado['Exercise'] != exercise]
 
-
-
-        # if exercise_count == 
+            st.rerun()
 
 except:
      st.write('no session')
@@ -182,25 +167,79 @@ if st.button("▶️ Start",key=f'my_button_id_{radio_exercise}'):
                         {mins:02d}:{secs:02d}
                     </h1>
 
-                    <h3 style='text-align:center;'>
-                        Termina às {horario_fim.strftime("%H:%M:%S")}
-                    </h3>
+                    
                     """,
+                    # <h3 style='text-align:center;'>
+                    #     Termina às {horario_fim.strftime("%H:%M:%S")}
+                    # </h3>
                     unsafe_allow_html=True
                 )
 
                 time.sleep(1)
-        # st.write(f'my_button_id_{line}')
-            # # adiciona nova linha no histórico
             st.session_state.historico.append(f'my_button_id_{radio_exercise}')
 
 quantidade = st.session_state.historico.count(f'my_button_id_{radio_exercise}')
 
-df_result = resultado[['Exercise','Now','Proposto']]
+df_result = resultado[['Exercise','Now','Proposition']]
 df_result = df_result[df_result['Exercise'] == radio_exercise]
-df_result['Quantidade'] = quantidade
+df_result['Performed'] = quantidade
+
+new_weight = st.number_input("Weight",value=df_result['Now'].iloc[0],step=0.5)
+
+if data == st.session_state.historico.count(f'my_button_id_{exercise}'):
+
+    df_update_github = df[df['exercise'] == radio_exercise.lower()].reset_index(drop=True)
+    df_update_github = df_update_github.sort_values('dt_ymd', ascending=False).reset_index(drop=True)
+    df_update_github = df_update_github.tail(1).reset_index(drop=True)
+    df_update_github['weight'] = new_weight
+    df_update_github['dt_ymd'] = datetime.now().strftime('%Y-%m-%d')
+    
+    update_github_json(df_update_github)
 
 st.dataframe(df_result,hide_index=True)
+
+col1, col2 = st.columns([2, 1.5])
+    
+with col1:
+    
+    df_graph = df[df['exercise'] == radio_exercise.lower()]
+
+    df_graph['dt_ymd'] = pd.to_datetime(df_graph['dt_ymd'])
+
+    df_graph = df_graph.sort_values(['dt_ymd'])
+
+    fig = px.line(
+        df_graph,
+        x='dt_ymd',
+        y='weight',
+        color='exercise'
+    )
+
+    fig.update_xaxes(
+        tickformat="%d/%m/%y"
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
+
+with col2:
+
+    try:
+        resultado_dataframe = resultado[['Exercise','3 Weeks','Last', 'Now', 'Dif']]
+    except:
+        try:
+            resultado_dataframe = resultado[['Exercise','Last', 'Now', 'Dif']]
+        except:
+            resultado_dataframe = resultado[['Exercise', 'Now', 'Dif']]
+
+
+    st.dataframe(resultado_dataframe.style.format({
+    '3 Weeks': '{:.1f}',
+    'Last': '{:.1f}',
+    'Now': '{:.1f}',
+    'Dif': '{:.1f}'
+}).highlight_between('Dif',left=0.1, right=10,color='green'),hide_index=True,height=(len(resultado_dataframe) + 1) * 36)
+
+
 
 # col_c1, col_c2 = st.columns([7,3])
 # for line in range(0,len(resultado)):
