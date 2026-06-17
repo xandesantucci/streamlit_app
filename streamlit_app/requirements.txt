@@ -4,3 +4,4 @@ pandas
 openpyxl
 holidays
 numpy
+pygithub
