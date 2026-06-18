@@ -2539,5 +2539,16 @@
         "series": 3,
         "rep": 12,
         "weight": 45.0
+    },
+    {
+        "dt_ymd": "2026-06-18",
+        "number": 1,
+        "group": "A",
+        "type": "peito",
+        "exercise": "cruxifixo inclinado",
+        "exercise_order": 2,
+        "series": 3,
+        "rep": 12,
+        "weight": 50.0
     }
 ]
