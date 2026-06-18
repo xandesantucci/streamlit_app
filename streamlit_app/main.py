@@ -11,7 +11,7 @@ import holidays
 
 pg = st.navigation([
     st.Page("pages/1_💪_GYM.py", title="Dashboard"),
-    st.Page("pages/2_💵​_Financial.py", title="Relatórios"),
+    # st.Page("pages/2_💵​_Financial.py", title="Relatórios"),
 ])
 
 pg.run()

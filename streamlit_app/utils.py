@@ -4,7 +4,7 @@ import requests
 import json
 import base64
 import pandas as pd
-from github import Github
+# from github import Github
 # import pywhatkit as kit
 # # import smtplib
 # # from email.mime.text import MIMEText
@@ -117,6 +117,8 @@ def update_github_json(df):
     )
 
     print("Status:", response.status_code)
+    st.write("Status:", response.status_code)
+
     print(response.json())
 
     if response.status_code not in [200, 201]:

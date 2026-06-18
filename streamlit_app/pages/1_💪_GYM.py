@@ -138,13 +138,11 @@ try:
         
         # st.write(data)
 
-        if data == st.session_state.historico.count(f'my_button_id_{exercise}'):
+        # if data == st.session_state.historico.count(f'my_button_id_{exercise}'):
 
-            
-             
-            resultado = resultado[resultado['Exercise'] != exercise]
+            # resultado = resultado[resultado['Exercise'] != exercise]
 
-            st.rerun()
+            # st.rerun()
 
 except:
      st.write('no session')
@@ -185,15 +183,17 @@ df_result = df_result[df_result['Exercise'] == radio_exercise]
 df_result['Performed'] = quantidade
 
 new_weight = st.number_input("Weight",value=df_result['Now'].iloc[0],step=0.5)
-
-if data == st.session_state.historico.count(f'my_button_id_{exercise}'):
+# data
+# power = st.session_state.historico.count(f'my_button_id_{radio_exercise}')
+# power
+if data == st.session_state.historico.count(f'my_button_id_{radio_exercise}'):
 
     df_update_github = df[df['exercise'] == radio_exercise.lower()].reset_index(drop=True)
     df_update_github = df_update_github.sort_values('dt_ymd', ascending=False).reset_index(drop=True)
     df_update_github = df_update_github.tail(1).reset_index(drop=True)
     df_update_github['weight'] = new_weight
     df_update_github['dt_ymd'] = datetime.now().strftime('%Y-%m-%d')
-    
+    st.write('Updating...')
     update_github_json(df_update_github)
 
 st.dataframe(df_result,hide_index=True)
@@ -219,7 +219,7 @@ with col1:
         tickformat="%d/%m/%y"
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
 with col2:
 
