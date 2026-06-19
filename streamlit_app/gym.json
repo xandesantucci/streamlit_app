@@ -2702,7 +2702,7 @@
     "exercise": "stiff",
     "exercise_order": 21,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2713,7 +2713,7 @@
     "exercise": "Leg press uni",
     "exercise_order": 22,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2724,7 +2724,7 @@
     "exercise": "panturrilha barra",
     "exercise_order": 23,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2735,7 +2735,7 @@
     "exercise": "cadeira adutora",
     "exercise_order": 24,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2746,7 +2746,7 @@
     "exercise": "cadeira abdutora",
     "exercise_order": 25,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2757,7 +2757,7 @@
     "exercise": "flexora em pe",
     "exercise_order": 26,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2768,7 +2768,7 @@
     "exercise": "gluteo maquina",
     "exercise_order": 27,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   }
 ]
