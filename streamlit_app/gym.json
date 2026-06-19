@@ -2500,7 +2500,7 @@
     "dt_ymd": "2026-06-16T03:00:00.000Z",
     "number": 2,
     "group": "B",
-    "type": "",
+    "type": "costas",
     "exercise": "",
     "exercise_order": "",
     "series": "",
