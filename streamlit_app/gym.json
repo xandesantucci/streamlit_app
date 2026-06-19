@@ -2583,5 +2583,93 @@
     "series": 3,
     "rep": 10,
     "weight": 12
+  },
+  {
+    "dt_ymd": "2026-06-16T03:00:00.000Z",
+    "number": 2,
+    "group": "B",
+    "type": "costas",
+    "exercise": "puxada frente aberta",
+    "exercise_order": 11,
+    "series": 3,
+    "rep": 10,
+    "weight": 65
+  },
+  {
+    "dt_ymd": "2026-06-16T03:00:00.000Z",
+    "number": 2,
+    "group": "B",
+    "type": "costas",
+    "exercise": "puxada triangulo",
+    "exercise_order": 12,
+    "series": 3,
+    "rep": 10,
+    "weight": 50
+  },
+  {
+    "dt_ymd": "2026-06-16T03:00:00.000Z",
+    "number": 2,
+    "group": "B",
+    "type": "costas",
+    "exercise": "remada curvada barra",
+    "exercise_order": 13,
+    "series": 3,
+    "rep": 10,
+    "weight": 15
+  },
+  {
+    "dt_ymd": "2026-06-16T03:00:00.000Z",
+    "number": 2,
+    "group": "B",
+    "type": "costas",
+    "exercise": "remada baixa",
+    "exercise_order": 14,
+    "series": 3,
+    "rep": 10,
+    "weight": 35
+  },
+  {
+    "dt_ymd": "2026-06-16T03:00:00.000Z",
+    "number": 2,
+    "group": "B",
+    "type": "costas",
+    "exercise": "pulldown corda",
+    "exercise_order": 15,
+    "series": 3,
+    "rep": 10,
+    "weight": 20
+  },
+  {
+    "dt_ymd": "2026-06-16T03:00:00.000Z",
+    "number": 2,
+    "group": "B",
+    "type": "biceps",
+    "exercise": "rosca 21",
+    "exercise_order": 16,
+    "series": 3,
+    "rep": 21,
+    "weight": 5
+  },
+  {
+    "dt_ymd": "2026-06-16T03:00:00.000Z",
+    "number": 2,
+    "group": "B",
+    "type": "biceps",
+    "exercise": "rosca alternada",
+    "exercise_order": 17,
+    "series": 3,
+    "rep": 10,
+    "weight": 12
+  },
+  {
+    "dt_ymd": "2026-06-16T03:00:00.000Z",
+    "number": 2,
+    "group": "B",
+    "type": "biceps",
+    "exercise": "rosca concentrada",
+    "exercise_order": 18,
+    "series": 3,
+    "rep": 10,
+    "weight": 12
   }
 ]
