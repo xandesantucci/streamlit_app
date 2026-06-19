@@ -2557,7 +2557,7 @@
     "group": "",
     "type": "biceps",
     "exercise": "rosca 21",
-    "exercise_order": "",
+    "exercise_order": 16,
     "series": "",
     "rep": "",
     "weight": ""
