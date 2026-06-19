@@ -2568,7 +2568,7 @@
     "group": "",
     "type": "biceps",
     "exercise": "rosca alternada",
-    "exercise_order": "",
+    "exercise_order": 17,
     "series": "",
     "rep": "",
     "weight": ""
