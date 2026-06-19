@@ -2684,9 +2684,9 @@
     "weight": 70
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-17T03:00:00.000Z",
+    "number": 2,
+    "group": "C",
     "type": "perna",
     "exercise": "agachamento +10",
     "exercise_order": 20,
@@ -2695,9 +2695,9 @@
     "weight": 20
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-17T03:00:00.000Z",
+    "number": 2,
+    "group": "C",
     "type": "perna",
     "exercise": "stiff",
     "exercise_order": 21,
@@ -2706,9 +2706,9 @@
     "weight": 15
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-17T03:00:00.000Z",
+    "number": 2,
+    "group": "C",
     "type": "perna",
     "exercise": "Leg press uni",
     "exercise_order": 22,
@@ -2717,9 +2717,9 @@
     "weight": 70
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-17T03:00:00.000Z",
+    "number": 2,
+    "group": "C",
     "type": "perna",
     "exercise": "panturrilha barra",
     "exercise_order": 23,
@@ -2728,9 +2728,9 @@
     "weight": 20
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-17T03:00:00.000Z",
+    "number": 2,
+    "group": "C",
     "type": "perna",
     "exercise": "cadeira adutora",
     "exercise_order": 24,
@@ -2739,9 +2739,9 @@
     "weight": 40
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-17T03:00:00.000Z",
+    "number": 2,
+    "group": "C",
     "type": "perna",
     "exercise": "cadeira abdutora",
     "exercise_order": 25,
@@ -2750,9 +2750,9 @@
     "weight": 40
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-17T03:00:00.000Z",
+    "number": 2,
+    "group": "C",
     "type": "perna",
     "exercise": "flexora em pe",
     "exercise_order": 26,
@@ -2761,9 +2761,9 @@
     "weight": 15
   },
   {
-    "dt_ymd": "",
-    "number": "",
-    "group": "",
+    "dt_ymd": "2026-06-17T03:00:00.000Z",
+    "number": 2,
+    "group": "C",
     "type": "perna",
     "exercise": "gluteo maquina",
     "exercise_order": 27,
