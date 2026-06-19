@@ -3067,5 +3067,16 @@
         "series": 3,
         "rep": 10,
         "weight": null
+    },
+    {
+        "dt_ymd": "2026-06-19",
+        "number": 2,
+        "group": "A",
+        "type": "triceps",
+        "exercise": "triceps frances unilateral cross",
+        "exercise_order": 6,
+        "series": 3,
+        "rep": 10,
+        "weight": 8.0
     }
 ]
