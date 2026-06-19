@@ -2570,7 +2570,7 @@
     "exercise": "rosca alternada",
     "exercise_order": 17,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2581,7 +2581,7 @@
     "exercise": "rosca concentrada",
     "exercise_order": 18,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   }
 ]
