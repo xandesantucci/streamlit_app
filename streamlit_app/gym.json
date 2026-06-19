@@ -2579,7 +2579,7 @@
     "group": "",
     "type": "biceps",
     "exercise": "rosca concentrada",
-    "exercise_order": "",
+    "exercise_order": 18,
     "series": "",
     "rep": "",
     "weight": ""
