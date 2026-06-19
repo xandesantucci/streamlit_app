@@ -2548,7 +2548,7 @@
     "exercise": "pulldown corda",
     "exercise_order": 15,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2559,7 +2559,7 @@
     "exercise": "rosca 21",
     "exercise_order": 16,
     "series": 3,
-    "rep": "",
+    "rep": 21,
     "weight": ""
   },
   {
