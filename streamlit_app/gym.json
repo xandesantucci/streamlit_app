@@ -2535,7 +2535,7 @@
     "group": "",
     "type": "costas",
     "exercise": "remada baixa",
-    "exercise_order": "",
+    "exercise_order": 1,
     "series": "",
     "rep": "",
     "weight": ""
@@ -2546,7 +2546,7 @@
     "group": "",
     "type": "costas",
     "exercise": "pulldown corda",
-    "exercise_order": "",
+    "exercise_order": 15,
     "series": "",
     "rep": "",
     "weight": ""
