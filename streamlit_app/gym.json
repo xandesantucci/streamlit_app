@@ -2891,5 +2891,16 @@
         "series": 3,
         "rep": 10,
         "weight": 20.0
+    },
+    {
+        "dt_ymd": "2026-06-19",
+        "number": 2,
+        "group": "A",
+        "type": "peito",
+        "exercise": "paralela",
+        "exercise_order": 4,
+        "series": 3,
+        "rep": 10,
+        "weight": null
     }
 ]
