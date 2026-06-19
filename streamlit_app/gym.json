@@ -2689,7 +2689,7 @@
     "group": "",
     "type": "perna",
     "exercise": "agachamento +10",
-    "exercise_order": "",
+    "exercise_order": 20,
     "series": "",
     "rep": "",
     "weight": ""
@@ -2700,7 +2700,7 @@
     "group": "",
     "type": "perna",
     "exercise": "stiff",
-    "exercise_order": "",
+    "exercise_order": 21,
     "series": "",
     "rep": "",
     "weight": ""
@@ -2711,7 +2711,7 @@
     "group": "",
     "type": "perna",
     "exercise": "Leg press uni",
-    "exercise_order": "",
+    "exercise_order": 22,
     "series": "",
     "rep": "",
     "weight": ""
@@ -2722,7 +2722,7 @@
     "group": "",
     "type": "perna",
     "exercise": "panturrilha barra",
-    "exercise_order": "",
+    "exercise_order": 23,
     "series": "",
     "rep": "",
     "weight": ""
@@ -2733,7 +2733,7 @@
     "group": "",
     "type": "perna",
     "exercise": "cadeira adutora",
-    "exercise_order": "",
+    "exercise_order": 24,
     "series": "",
     "rep": "",
     "weight": ""
@@ -2744,7 +2744,7 @@
     "group": "",
     "type": "perna",
     "exercise": "cadeira abdutora",
-    "exercise_order": "",
+    "exercise_order": 25,
     "series": "",
     "rep": "",
     "weight": ""
@@ -2755,7 +2755,7 @@
     "group": "",
     "type": "perna",
     "exercise": "flexora em pe",
-    "exercise_order": "",
+    "exercise_order": 26,
     "series": "",
     "rep": "",
     "weight": ""
@@ -2766,7 +2766,7 @@
     "group": "",
     "type": "perna",
     "exercise": "gluteo maquina",
-    "exercise_order": "",
+    "exercise_order": 27,
     "series": "",
     "rep": "",
     "weight": ""
