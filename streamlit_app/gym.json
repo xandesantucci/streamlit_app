@@ -2513,7 +2513,7 @@
     "group": "",
     "type": "costas",
     "exercise": "puxada triangulo",
-    "exercise_order": "",
+    "exercise_order": 12,
     "series": "",
     "rep": "",
     "weight": ""
