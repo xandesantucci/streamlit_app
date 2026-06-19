@@ -3133,5 +3133,16 @@
         "series": 3,
         "rep": 10,
         "weight": 20.0
+    },
+    {
+        "dt_ymd": "2026-06-19",
+        "number": 2,
+        "group": "A",
+        "type": "peito",
+        "exercise": "supino reto",
+        "exercise_order": 2,
+        "series": 3,
+        "rep": 10,
+        "weight": 20.0
     }
 ]
