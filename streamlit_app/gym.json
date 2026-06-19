@@ -2691,7 +2691,7 @@
     "exercise": "agachamento +10",
     "exercise_order": 20,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
