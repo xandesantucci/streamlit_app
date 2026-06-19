@@ -2517,5 +2517,16 @@
     "series": "",
     "rep": "",
     "weight": ""
+  },
+  {
+    "dt_ymd": "",
+    "number": "",
+    "group": "",
+    "type": "costas",
+    "exercise": "",
+    "exercise_order": "",
+    "series": "",
+    "rep": "",
+    "weight": ""
   }
 ]
