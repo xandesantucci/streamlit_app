@@ -2503,7 +2503,7 @@
     "type": "costas",
     "exercise": "puxada frente aberta",
     "exercise_order": 11,
-    "series": "",
+    "series": 3,
     "rep": "",
     "weight": ""
   },
@@ -2514,7 +2514,7 @@
     "type": "costas",
     "exercise": "puxada triangulo",
     "exercise_order": 12,
-    "series": "",
+    "series": 3,
     "rep": "",
     "weight": ""
   },
@@ -2525,7 +2525,7 @@
     "type": "costas",
     "exercise": "remada curvada barra",
     "exercise_order": 13,
-    "series": "",
+    "series": 3,
     "rep": "",
     "weight": ""
   },
@@ -2536,7 +2536,7 @@
     "type": "costas",
     "exercise": "remada baixa",
     "exercise_order": 14,
-    "series": "",
+    "series": 3,
     "rep": "",
     "weight": ""
   },
@@ -2547,7 +2547,7 @@
     "type": "costas",
     "exercise": "pulldown corda",
     "exercise_order": 15,
-    "series": "",
+    "series": 3,
     "rep": "",
     "weight": ""
   },
@@ -2558,7 +2558,7 @@
     "type": "biceps",
     "exercise": "rosca 21",
     "exercise_order": 16,
-    "series": "",
+    "series": 3,
     "rep": "",
     "weight": ""
   },
@@ -2569,7 +2569,7 @@
     "type": "biceps",
     "exercise": "rosca alternada",
     "exercise_order": 17,
-    "series": "",
+    "series": 3,
     "rep": "",
     "weight": ""
   },
@@ -2580,7 +2580,7 @@
     "type": "biceps",
     "exercise": "rosca concentrada",
     "exercise_order": 18,
-    "series": "",
+    "series": 3,
     "rep": "",
     "weight": ""
   }
