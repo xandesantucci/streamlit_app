@@ -33,20 +33,20 @@ df['weight'] = (pd.to_numeric(df['weight'], errors='coerce'))
 
 col1, col2, col3 = st.columns([1, 1, 1])
 with col1:
-    number_group = st.selectbox("Training:", np.sort(df['number'].unique())[::-1])
+    number_group = st.selectbox("💪 Training:", np.sort(df['number'].unique())[::-1])
 
 
     df = df[df['number'] == number_group]
 
 with col2:
-    list_group = st.selectbox("Series:", np.sort(df['group'].unique()))
+    list_group = st.selectbox("🏋️ Series:", np.sort(df['group'].unique()))
 
     df = df[df['group'] == list_group]
 
 
 with col3:
 
-    segundos = st.number_input("🏋️ Break",value=60,step=5)
+    segundos = st.number_input("⏰ Break:",value=60,step=5)
 
 
 
@@ -115,94 +115,197 @@ resultado['Proposition'] = np.where(
 
 resultado['Exercise'] = resultado['Exercise'].str.capitalize()
 
-
+# df_exdad = resultado.copy()
 
 
 
 if "historico" not in st.session_state:
     st.session_state.historico = []
 
+if "saved" not in st.session_state:
+    st.session_state.saved = []
 
+# try:
+#     # st.write(st.session_state.historico)  
 
-try:
-    # st.write(st.session_state.historico)  
+#     for exercise in resultado['Exercise'].unique():
 
-    for exercise in resultado['Exercise'].unique():
-
-        # st.write(st.session_state.historico.count(f'my_button_id_{exercise}'))
+#         # st.write(st.session_state.historico.count(f'my_button_id_{exercise}'))
         
-        df_result = resultado[resultado['Exercise'] == exercise].reset_index()
+#         df_result = resultado[resultado['Exercise'] == exercise].reset_index()
 
-        data = df_result['Series'].iloc[0]
+#         data = df_result['Series'].iloc[0]
 
         
-        # st.write(data)
+#         # st.write(data)
 
-        # if data == st.session_state.historico.count(f'my_button_id_{exercise}'):
+#         # if data == st.session_state.historico.count(f'my_button_id_{exercise}'):
 
-            # resultado = resultado[resultado['Exercise'] != exercise]
+#             # resultado = resultado[resultado['Exercise'] != exercise]
 
-            # st.rerun()
+#             # st.rerun()
 
-except:
-     st.write('no session')
+# except:
+#      st.write('no session')
 
-radio_exercise = st.radio('Radio:',resultado['Exercise'].unique())
+# radio_exercise = st.radio('Radio:',resultado['Exercise'].unique())
 
-placeholder = st.empty()
+# placeholder = st.empty()
 
-if st.button("▶️ Start",key=f'my_button_id_{radio_exercise}'):
+# if st.button("▶️ Start",key=f'my_button_id_{radio_exercise}'):
             
-            horario_fim = datetime.now() + timedelta(seconds=segundos) - timedelta(hours=3)
+#             horario_fim = datetime.now() + timedelta(seconds=segundos) - timedelta(hours=3)
 
-            for i in range(segundos, -1, -1):
+#             for i in range(segundos, -1, -1):
 
-                mins, secs = divmod(i, 60)
+#                 mins, secs = divmod(i, 60)
 
-                placeholder.markdown(
-                    f"""
-                    <h1 style='text-align:center;font-size:50px;'>
-                        {mins:02d}:{secs:02d}
-                    </h1>
+#                 placeholder.markdown(
+#                     f"""
+#                     <h1 style='text-align:center;font-size:50px;'>
+#                         {mins:02d}:{secs:02d}
+#                     </h1>
+#                     """,
+#                     unsafe_allow_html=True
+#                 )
 
-                    
-                    """,
-                    # <h3 style='text-align:center;'>
-                    #     Termina às {horario_fim.strftime("%H:%M:%S")}
-                    # </h3>
-                    unsafe_allow_html=True
-                )
+#                 time.sleep(1)
+#             st.session_state.historico.append(f'my_button_id_{radio_exercise}')
 
-                time.sleep(1)
-            st.session_state.historico.append(f'my_button_id_{radio_exercise}')
+# quantidade = st.session_state.historico.count(f'my_button_id_{radio_exercise}')
 
-quantidade = st.session_state.historico.count(f'my_button_id_{radio_exercise}')
+# df_result = resultado[['Exercise','Now','Proposition']]
+# df_result = df_result[df_result['Exercise'] == radio_exercise]
+# df_result['Performed'] = quantidade
 
-df_result = resultado[['Exercise','Now','Proposition']]
-df_result = df_result[df_result['Exercise'] == radio_exercise]
-df_result['Performed'] = quantidade
+# new_weight = st.number_input("Weight",value=df_result['Now'].iloc[0],step=0.5)
+# # data
+# # power = st.session_state.historico.count(f'my_button_id_{radio_exercise}')
+# # power
+# if data == st.session_state.historico.count(f'my_button_id_{radio_exercise}'):
 
-new_weight = st.number_input("Weight",value=df_result['Now'].iloc[0],step=0.5)
-# data
-# power = st.session_state.historico.count(f'my_button_id_{radio_exercise}')
-# power
-if data == st.session_state.historico.count(f'my_button_id_{radio_exercise}'):
+#     df_update_github = df[df['exercise'] == radio_exercise.lower()].reset_index(drop=True)
+#     df_update_github = df_update_github.sort_values('dt_ymd', ascending=False).reset_index(drop=True)
+#     df_update_github = df_update_github.tail(1).reset_index(drop=True)
+#     df_update_github['weight'] = new_weight
+#     df_update_github['dt_ymd'] = datetime.now().strftime('%Y-%m-%d')
+#     st.write('Updating...')
+#     update_github_json(df_update_github)
 
-    df_update_github = df[df['exercise'] == radio_exercise.lower()].reset_index(drop=True)
-    df_update_github = df_update_github.sort_values('dt_ymd', ascending=False).reset_index(drop=True)
-    df_update_github = df_update_github.tail(1).reset_index(drop=True)
-    df_update_github['weight'] = new_weight
-    df_update_github['dt_ymd'] = datetime.now().strftime('%Y-%m-%d')
-    st.write('Updating...')
-    update_github_json(df_update_github)
+# st.dataframe(df_result,hide_index=True)
 
-st.dataframe(df_result,hide_index=True)
+for exercise in resultado['Exercise'].unique():
+
+    with st.expander(exercise,key=f'my_expander_id_{exercise}'):
+        
+        placeholder = st.empty()
+
+        col1, col2, col3, col4, col5      = st.columns([1,1,7,1,1])
+    
+        with col1:
+
+            st.markdown("""
+            <style>
+            .center-column {
+                display: flex;
+                justify-content: center;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+
+            if st.button("▶️ Start",key=f'exercise_button_id_{exercise}'):
+                        
+                        horario_fim = datetime.now() + timedelta(seconds=segundos) - timedelta(hours=3)
+
+                        for i in range(segundos, -1, -1):
+
+                            mins, secs = divmod(i, 60)
+
+                            placeholder.markdown(
+                                f"""
+                                <h1 style='text-align:center;font-size:50px;'>
+                                    {mins:02d}:{secs:02d}
+                                </h1>
+                                """,
+                                unsafe_allow_html=True
+                            )
+
+                            time.sleep(1)
+                        st.session_state.historico.append(f'exercise_button_id_{exercise}')
+
+        quantidade = st.session_state.historico.count(f'exercise_button_id_{exercise}')
+
+        df_result = resultado[['Exercise','Now','Proposition']]
+        df_result = df_result[df_result['Exercise'] == exercise]
+        df_result['Performed'] = quantidade
+
+        with col2:
+
+            new_weight = st.number_input("Weight",value=df_result['Now'].iloc[0],step=0.5,key=f'exercise_number_id_{exercise}')
+
+
+        df_update_github = df[df['exercise'] == exercise.lower()].reset_index(drop=True)
+        df_update_github = df_update_github.sort_values('dt_ymd', ascending=False).reset_index(drop=True)
+        df_update_github = df_update_github.tail(1).reset_index(drop=True)
+        df_update_github['weight'] = new_weight
+        df_update_github['dt_ymd'] = datetime.now().strftime('%Y-%m-%d')
+
+        df_data = resultado[resultado['Exercise'] == exercise].reset_index()
+
+        data = df_data['Series'].iloc[0]
+
+        if data == st.session_state.historico.count(f'exercise_button_id_{exercise}'):
+
+            
+            st.write('Updating...')
+            alpha = update_github_json(df_update_github)
+            alpha
+
+        with col3:
+
+            st.dataframe(df_result,hide_index=True)
+
+        with col4:
+
+            st.markdown("""
+            <style>
+            .center-column {
+                display: flex;
+                justify-content: center;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+
+            st.button("💾​ Save",key=f'save_button_id_{exercise}',on_click=update_github_json,args=(df_update_github,))
+
+        with col5:
+
+            st.markdown("""
+            <style>
+            .center-column {
+                display: flex;
+                justify-content: center;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+            
+            if st.session_state.saved.count(f'exercise_saved_{exercise.lower()}') > 0:
+
+                st.session_state[f'checkbox_id_{exercise}'] = True
+            else:
+                st.session_state[f'checkbox_id_{exercise}'] = False
+
+            st.checkbox("Done",key=f'checkbox_id_{exercise}',disabled=True)
+
+        
 
 col1, col2 = st.columns([2, 1.5])
     
 with col1:
     
-    df_graph = df[df['exercise'] == radio_exercise.lower()]
+    df_graph = df
+    # df_graph = df[df['exercise'] == radio_exercise.lower()]
+
 
     df_graph['dt_ymd'] = pd.to_datetime(df_graph['dt_ymd'])
 

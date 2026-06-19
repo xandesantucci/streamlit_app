@@ -25,106 +25,118 @@ def st_write_justify(text, word='none', color="green"):
     )
 
 def update_github_json(df):
-
-    # Configurações
-    GITHUB_TOKEN = st.secrets["GITHUB_TOKEN"]
-    OWNER = "xandesantucci"
-    REPO = "streamlit_app"
-    FILE_PATH = "streamlit_app/gym.json"
-    BRANCH = "main"
-    # URL do arquivo
-    url = f"https://api.github.com/repos/{OWNER}/{REPO}/contents/{FILE_PATH}"
-
-    headers = {
-        "Authorization": f"Bearer {GITHUB_TOKEN}",
-        "Accept": "application/vnd.github+json"
-    }
-
-    # 1. Buscar SHA atual do arquivo
-    response = requests.get(url, headers=headers)
-
-    if response.status_code != 200:
-        raise Exception(f"Erro ao localizar arquivo: {response.text}")
-
-    arquivo = response.json()
-    sha = arquivo["sha"]
-
-    # Ler conteúdo atual
-    conteudo_atual = base64.b64decode(
-        arquivo["content"]
-    ).decode("utf-8")
-
     try:
-        dados = json.loads(conteudo_atual)
+        # Configurações
+        GITHUB_TOKEN = st.secrets["GITHUB_TOKEN"]
+        OWNER = "xandesantucci"
+        REPO = "streamlit_app"
+        FILE_PATH = "streamlit_app/gym.json"
+        BRANCH = "main"
+        # URL do arquivo
+        url = f"https://api.github.com/repos/{OWNER}/{REPO}/contents/{FILE_PATH}"
 
-        if isinstance(dados, dict):
-            dados = [dados]
+        headers = {
+            "Authorization": f"Bearer {GITHUB_TOKEN}",
+            "Accept": "application/vnd.github+json"
+        }
 
-    except Exception:
-        dados = []
+        # 1. Buscar SHA atual do arquivo
+        response = requests.get(url, headers=headers)
 
-     # Adicionar linhas do dataframe
-    for _, linha in df.iterrows():
+        if response.status_code != 200:
+            raise Exception(f"Erro ao localizar arquivo: {response.text}")
 
-        registro = linha.to_dict()
+        arquivo = response.json()
+        sha = arquivo["sha"]
 
-        # Converter datas para string
-        for k, v in registro.items():
+        # Ler conteúdo atual
+        conteudo_atual = base64.b64decode(
+            arquivo["content"]
+        ).decode("utf-8")
 
-            if pd.isna(v):
-                registro[k] = None
+        try:
+            dados = json.loads(conteudo_atual)
 
-            elif isinstance(
-                v,
-                (
-                    pd.Timestamp,
-                )
-            ):
-                registro[k] = v.strftime("%Y-%m-%d %H:%M:%S")
+            if isinstance(dados, dict):
+                dados = [dados]
 
-            elif hasattr(v, "strftime"):
-                registro[k] = v.strftime("%Y-%m-%d")
+        except Exception:
+            dados = []
 
-        dados.append(registro)
+        # Adicionar linhas do dataframe
+        for _, linha in df.iterrows():
 
-    # 2. Seu novo conteúdo JSON
-    # linha = df.iloc[0]
+            registro = linha.to_dict()
 
-    # novo_json = linha.to_dict()
+            # Converter datas para string
+            for k, v in registro.items():
 
-    conteudo = json.dumps(
-        dados,
-        ensure_ascii=False,
-        indent=4
-    )
+                if pd.isna(v):
+                    registro[k] = None
 
-    conteudo_base64 = base64.b64encode(
-        conteudo.encode("utf-8")
-    ).decode("utf-8")
+                elif isinstance(
+                    v,
+                    (
+                        pd.Timestamp,
+                    )
+                ):
+                    registro[k] = v.strftime("%Y-%m-%d %H:%M:%S")
 
-    # 3. Atualizar arquivo
-    payload = {
-        "message": "Atualização automática do JSON",
-        "content": conteudo_base64,
-        "sha": sha,
-        "branch": BRANCH
-    }
+                elif hasattr(v, "strftime"):
+                    registro[k] = v.strftime("%Y-%m-%d")
 
-    response = requests.put(
-        url,
-        headers=headers,
-        json=payload
-    )
+            dados.append(registro)
 
-    print("Status:", response.status_code)
-    st.write("Status:", response.status_code)
+        # 2. Seu novo conteúdo JSON
+        # linha = df.iloc[0]
 
-    print(response.json())
+        # novo_json = linha.to_dict()
 
-    if response.status_code not in [200, 201]:
-        raise Exception(response.text)
+        conteudo = json.dumps(
+            dados,
+            ensure_ascii=False,
+            indent=4
+        )
 
-    return response.json()
+        conteudo_base64 = base64.b64encode(
+            conteudo.encode("utf-8")
+        ).decode("utf-8")
+
+        # 3. Atualizar arquivo
+        payload = {
+            "message": "Atualização automática do JSON",
+            "content": conteudo_base64,
+            "sha": sha,
+            "branch": BRANCH
+        }
+
+        response = requests.put(
+            url,
+            headers=headers,
+            json=payload
+        )
+
+        print("Status:", response.status_code)
+        st.write("Status:", response.status_code)
+
+        print(response.json())
+
+        if response.status_code not in [200, 201]:
+            raise Exception(response.text)
+
+
+
+        for exercise in df['exercise'].unique():
+            st.session_state.saved.append(f'exercise_saved_{exercise}')
+
+        return response.json()
+
+    except Exception as e:
+        print("Erro:", str(e))
+        st.write("Erro:", str(e))
+        return None
+    
+#####################################################################################
     # try:
     #     with open(file_path, 'w') as f:
     #         json.dump(new_data, f, indent=4)
