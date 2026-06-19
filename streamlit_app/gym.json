@@ -2502,7 +2502,7 @@
     "group": "B",
     "type": "costas",
     "exercise": "puxada frente aberta",
-    "exercise_order": "",
+    "exercise_order": 11,
     "series": "",
     "rep": "",
     "weight": ""
