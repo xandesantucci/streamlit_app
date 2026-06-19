@@ -2524,7 +2524,7 @@
     "group": "",
     "type": "costas",
     "exercise": "remada curvada barra",
-    "exercise_order": "",
+    "exercise_order": 13,
     "series": "",
     "rep": "",
     "weight": ""
