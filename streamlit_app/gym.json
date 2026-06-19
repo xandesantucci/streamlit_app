@@ -3100,5 +3100,16 @@
         "series": 3,
         "rep": "",
         "weight": null
+    },
+    {
+        "dt_ymd": "2026-06-19",
+        "number": 2,
+        "group": "A",
+        "type": "abdominal",
+        "exercise": "abdominal infra paralela com peso",
+        "exercise_order": 10,
+        "series": 3,
+        "rep": 10,
+        "weight": 3.0
     }
 ]
