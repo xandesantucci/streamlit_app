@@ -2526,7 +2526,7 @@
     "exercise": "remada curvada barra",
     "exercise_order": 13,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2537,7 +2537,7 @@
     "exercise": "remada baixa",
     "exercise_order": 14,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
