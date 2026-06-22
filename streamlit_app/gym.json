@@ -2878,7 +2878,7 @@
     "exercise": "desenvolvimento smith",
     "exercise_order": 28,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2889,7 +2889,7 @@
     "exercise": "elevação lateral cross",
     "exercise_order": 29,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2900,7 +2900,7 @@
     "exercise": "elevação frontal unilateral c/isometria",
     "exercise_order": 30,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2911,7 +2911,7 @@
     "exercise": "crucifixo inverso banco",
     "exercise_order": 31,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2922,7 +2922,7 @@
     "exercise": "remada alta",
     "exercise_order": 32,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2933,7 +2933,7 @@
     "exercise": "encolhimento smith",
     "exercise_order": 33,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2944,7 +2944,7 @@
     "exercise": "rosca inversa",
     "exercise_order": 34,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2955,7 +2955,7 @@
     "exercise": "rosca punho barra",
     "exercise_order": 35,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2966,7 +2966,7 @@
     "exercise": "abdominal prancha",
     "exercise_order": 36,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   },
   {
@@ -2977,7 +2977,7 @@
     "exercise": "abdominal banco declinado c/peso",
     "exercise_order": 37,
     "series": 3,
-    "rep": "",
+    "rep": 10,
     "weight": ""
   }
 ]
