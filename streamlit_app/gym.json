@@ -2979,5 +2979,115 @@
     "series": 3,
     "rep": 10,
     "weight": 10
+  },
+  {
+    "dt_ymd": "2026-06-22T03:00:00.000Z",
+    "number": 2,
+    "group": "D",
+    "type": "ombro",
+    "exercise": "desenvolvimento smith",
+    "exercise_order": 28,
+    "series": 3,
+    "rep": 10,
+    "weight": 15
+  },
+  {
+    "dt_ymd": "2026-06-22T03:00:00.000Z",
+    "number": 2,
+    "group": "D",
+    "type": "ombro",
+    "exercise": "elevação lateral cross",
+    "exercise_order": 29,
+    "series": 3,
+    "rep": 10,
+    "weight": 3.25
+  },
+  {
+    "dt_ymd": "2026-06-22T03:00:00.000Z",
+    "number": 2,
+    "group": "D",
+    "type": "ombro",
+    "exercise": "elevação frontal unilateral c/isometria",
+    "exercise_order": 30,
+    "series": 3,
+    "rep": 10,
+    "weight": 4
+  },
+  {
+    "dt_ymd": "2026-06-22T03:00:00.000Z",
+    "number": 2,
+    "group": "D",
+    "type": "ombro",
+    "exercise": "crucifixo inverso banco",
+    "exercise_order": 31,
+    "series": 3,
+    "rep": 10,
+    "weight": 9
+  },
+  {
+    "dt_ymd": "2026-06-22T03:00:00.000Z",
+    "number": 2,
+    "group": "D",
+    "type": "ombro",
+    "exercise": "remada alta",
+    "exercise_order": 32,
+    "series": 3,
+    "rep": 10,
+    "weight": 25
+  },
+  {
+    "dt_ymd": "2026-06-22T03:00:00.000Z",
+    "number": 2,
+    "group": "D",
+    "type": "ombro",
+    "exercise": "encolhimento smith",
+    "exercise_order": 33,
+    "series": 3,
+    "rep": 10,
+    "weight": 20
+  },
+  {
+    "dt_ymd": "2026-06-22T03:00:00.000Z",
+    "number": 2,
+    "group": "D",
+    "type": "ante-braço",
+    "exercise": "rosca inversa",
+    "exercise_order": 34,
+    "series": 3,
+    "rep": 10,
+    "weight": 20
+  },
+  {
+    "dt_ymd": "2026-06-22T03:00:00.000Z",
+    "number": 2,
+    "group": "D",
+    "type": "ante-braço",
+    "exercise": "rosca punho barra",
+    "exercise_order": 35,
+    "series": 3,
+    "rep": 10,
+    "weight": 5
+  },
+  {
+    "dt_ymd": "2026-06-22T03:00:00.000Z",
+    "number": 2,
+    "group": "D",
+    "type": "abdominal",
+    "exercise": "abdominal prancha",
+    "exercise_order": 36,
+    "series": 3,
+    "rep": 10,
+    "weight": ""
+  },
+  {
+    "dt_ymd": "2026-06-22T03:00:00.000Z",
+    "number": 2,
+    "group": "D",
+    "type": "abdominal",
+    "exercise": "abdominal banco declinado c/peso",
+    "exercise_order": 37,
+    "series": 3,
+    "rep": 10,
+    "weight": 10
   }
 ]
