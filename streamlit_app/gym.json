@@ -4068,5 +4068,16 @@
         "series": 3,
         "rep": 10,
         "weight": 8.0
+    },
+    {
+        "dt_ymd": "2026-06-24",
+        "number": 2,
+        "group": "A",
+        "type": "triceps",
+        "exercise": "triceps corda falha",
+        "exercise_order": 7,
+        "series": 3,
+        "rep": 14,
+        "weight": 20.0
     }
 ]
