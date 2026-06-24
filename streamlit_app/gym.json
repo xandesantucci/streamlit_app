@@ -3111,5 +3111,16 @@
         "series": 3,
         "rep": 10,
         "weight": 20.0
+    },
+    {
+        "dt_ymd": "2026-06-24",
+        "number": 2,
+        "group": "A",
+        "type": "peito",
+        "exercise": "supino inclinado barra",
+        "exercise_order": 1,
+        "series": 3,
+        "rep": 10,
+        "weight": 20.0
     }
 ]
