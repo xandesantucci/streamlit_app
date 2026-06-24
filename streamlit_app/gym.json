@@ -4442,5 +4442,16 @@
         "series": 3,
         "rep": 10,
         "weight": null
+    },
+    {
+        "dt_ymd": "2026-06-24",
+        "number": 2,
+        "group": "A",
+        "type": "abdominal",
+        "exercise": "abdominal prancha lateral",
+        "exercise_order": 9,
+        "series": 3,
+        "rep": "",
+        "weight": null
     }
 ]
