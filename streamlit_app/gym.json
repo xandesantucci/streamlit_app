@@ -3463,5 +3463,16 @@
         "series": 3,
         "rep": 10,
         "weight": null
+    },
+    {
+        "dt_ymd": "2026-06-24",
+        "number": 2,
+        "group": "A",
+        "type": "peito",
+        "exercise": "cross polia barra",
+        "exercise_order": 5,
+        "series": 3,
+        "rep": 10,
+        "weight": 8.0
     }
 ]
