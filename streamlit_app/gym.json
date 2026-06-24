@@ -4376,5 +4376,16 @@
         "series": 3,
         "rep": 10,
         "weight": 22.0
+    },
+    {
+        "dt_ymd": "2026-06-24",
+        "number": 2,
+        "group": "A",
+        "type": "peito",
+        "exercise": "crucifixo carga",
+        "exercise_order": 3,
+        "series": 3,
+        "rep": 10,
+        "weight": 12.5
     }
 ]
