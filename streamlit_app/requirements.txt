@@ -5,3 +5,7 @@ openpyxl
 holidays
 numpy
 pygithub
+psycopg2
+pathlib
+tomllib
+contextlib
