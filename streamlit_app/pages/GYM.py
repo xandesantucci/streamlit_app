@@ -2,56 +2,42 @@ import streamlit as st
 import pandas as pd
 # from pandas.tseries.offsets import DateOffset
 from datetime import datetime, timedelta
-from utils import st_write_justify,update_github_json
+
+from utils import st_write_justify,update_github_json,select_all,insert_one
 import time
 import numpy as np
 import plotly.express as px
+from translations import t
 
 st.set_page_config(
-
-    page_title="Gym",
-    page_icon="💪",
+    page_title=t("gym_title", st.session_state.lang),
+    # page_icon="💪",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
+st.markdown('<h1 class="section-header">' + t("gym_title", st.session_state.lang) + '</h1>', unsafe_allow_html=True)
 
-st.markdown('<h1 class="section-header">💪 Gym</h1>', unsafe_allow_html=True)
+df = pd.DataFrame(select_all('gym'))
 
-try:
-    # df = pd.read_excel('streamlit_app/arquivo_gym.xlsx')
-    df = pd.read_json('streamlit_app/gym.json')
-    
-except:
-    # df = pd.read_excel('arquivo_gym.xlsx')
-    df = pd.read_json('gym.json')
-
-df['dt_ymd'] = pd.to_datetime(df['dt_ymd'],format='mixed',utc=True)
-df['weight'] = (pd.to_numeric(df['weight'], errors='coerce'))
-# Converter data
-# df['dt_ymd'] = pd.to_datetime(df['dt_ymd'], dayfirst=True)
+lang = st.session_state.lang
 
 col1, col2, col3 = st.columns([1, 1, 1])
+
 with col1:
-    number_group = st.selectbox("💪 Training:", np.sort(df['number'].unique())[::-1])
 
-
-    df = df[df['number'] == number_group]
+    st.selectbox(t("gym_training",lang), options=np.sort(df['number'].unique())[::-1],key="select_traine_page")
+    df = df[df['number'] == st.session_state.select_traine_page]
 
 with col2:
-    list_group = st.selectbox("🏋️ Series:", np.sort(df['group'].unique()))
 
+    list_group = st.selectbox(t("gym_series",lang), np.sort(df['group'].unique()))
     df = df[df['group'] == list_group]
-
 
 with col3:
 
-    segundos = st.number_input("⏰ Break:",value=60,step=5)
+    segundos = st.number_input(t("gym_break",lang),value=60,step=5)
 
-
-
-
-# Pegar últimos 2 registros de cada exercício
 ultimos = df.groupby('exercise').tail(3)
 
 # Criar ranking dentro do exercício
@@ -117,6 +103,40 @@ resultado['Exercise'] = resultado['Exercise'].str.capitalize()
 
 # df_exdad = resultado.copy()
 
+st.markdown("""
+<style>
+.card {
+    background: linear-gradient(145deg, #1E293B, #0F172A);
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #263449;
+    box-shadow: 0px 6px 18px rgba(0,0,0,0.35);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.metric {
+    font-size: 22px;
+    font-weight: 800;
+    color: #22C55E;
+    margin-top: 10px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background-color: #22C55E;
+    color: #0F172A;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+</style>
+""", unsafe_allow_html=True)
 
 
 if "historico" not in st.session_state:
@@ -125,74 +145,6 @@ if "historico" not in st.session_state:
 if "saved" not in st.session_state:
     st.session_state.saved = []
 
-# try:
-#     # st.write(st.session_state.historico)  
-
-#     for exercise in resultado['Exercise'].unique():
-
-#         # st.write(st.session_state.historico.count(f'my_button_id_{exercise}'))
-        
-#         df_result = resultado[resultado['Exercise'] == exercise].reset_index()
-
-#         data = df_result['Series'].iloc[0]
-
-        
-#         # st.write(data)
-
-#         # if data == st.session_state.historico.count(f'my_button_id_{exercise}'):
-
-#             # resultado = resultado[resultado['Exercise'] != exercise]
-
-#             # st.rerun()
-
-# except:
-#      st.write('no session')
-
-# radio_exercise = st.radio('Radio:',resultado['Exercise'].unique())
-
-# placeholder = st.empty()
-
-# if st.button("▶️ Start",key=f'my_button_id_{radio_exercise}'):
-            
-#             horario_fim = datetime.now() + timedelta(seconds=segundos) - timedelta(hours=3)
-
-#             for i in range(segundos, -1, -1):
-
-#                 mins, secs = divmod(i, 60)
-
-#                 placeholder.markdown(
-#                     f"""
-#                     <h1 style='text-align:center;font-size:50px;'>
-#                         {mins:02d}:{secs:02d}
-#                     </h1>
-#                     """,
-#                     unsafe_allow_html=True
-#                 )
-
-#                 time.sleep(1)
-#             st.session_state.historico.append(f'my_button_id_{radio_exercise}')
-
-# quantidade = st.session_state.historico.count(f'my_button_id_{radio_exercise}')
-
-# df_result = resultado[['Exercise','Now','Proposition']]
-# df_result = df_result[df_result['Exercise'] == radio_exercise]
-# df_result['Performed'] = quantidade
-
-# new_weight = st.number_input("Weight",value=df_result['Now'].iloc[0],step=0.5)
-# # data
-# # power = st.session_state.historico.count(f'my_button_id_{radio_exercise}')
-# # power
-# if data == st.session_state.historico.count(f'my_button_id_{radio_exercise}'):
-
-#     df_update_github = df[df['exercise'] == radio_exercise.lower()].reset_index(drop=True)
-#     df_update_github = df_update_github.sort_values('dt_ymd', ascending=False).reset_index(drop=True)
-#     df_update_github = df_update_github.tail(1).reset_index(drop=True)
-#     df_update_github['weight'] = new_weight
-#     df_update_github['dt_ymd'] = datetime.now().strftime('%Y-%m-%d')
-#     st.write('Updating...')
-#     update_github_json(df_update_github)
-
-# st.dataframe(df_result,hide_index=True)
 
 for exercise in resultado['Exercise'].unique():
 
@@ -200,20 +152,20 @@ for exercise in resultado['Exercise'].unique():
         
         placeholder = st.empty()
 
-        col1, col2, col3, col4, col5      = st.columns([1,1,7,1,1])
+        col1, col2, col3, col4, col5      = st.columns([1,1.5,7,1,1])
     
         with col1:
 
-            st.markdown("""
-            <style>
-            .center-column {
-                display: flex;
-                justify-content: center;
-            }
-            </style>
-            """, unsafe_allow_html=True)
+            # st.markdown("""
+            # <style>
+            # .center-column {
+            #     display: flex;
+            #     justify-content: center;
+            # }
+            # </style>
+            # """, unsafe_allow_html=True)
 
-            if st.button("▶️ Start",key=f'exercise_button_id_{exercise}'):
+            if st.button(t("gym_start",lang),key=f'exercise_button_id_{exercise}'):
                         
                         horario_fim = datetime.now() + timedelta(seconds=segundos) - timedelta(hours=3)
 
@@ -241,12 +193,13 @@ for exercise in resultado['Exercise'].unique():
 
         with col2:
 
-            new_weight = st.number_input("Weight",value=df_result['Now'].iloc[0],step=0.5,key=f'exercise_number_id_{exercise}')
-
+            new_weight = st.number_input(t("gym_weight",lang),value=df_result['Now'].iloc[0],step=0.5,key=f'exercise_number_id_{exercise}')
 
         df_update_github = df[df['exercise'] == exercise.lower()].reset_index(drop=True)
+
         df_update_github = df_update_github.sort_values('dt_ymd', ascending=False).reset_index(drop=True)
         df_update_github = df_update_github.tail(1).reset_index(drop=True)
+        df_done_check = df_update_github['dt_ymd'].iloc[0]
         df_update_github['weight'] = new_weight
         df_update_github['dt_ymd'] = datetime.now().strftime('%Y-%m-%d')
 
@@ -256,46 +209,38 @@ for exercise in resultado['Exercise'].unique():
 
         if data == st.session_state.historico.count(f'exercise_button_id_{exercise}'):
 
-            
             st.write('Updating...')
-            alpha = update_github_json(df_update_github)
-            alpha
+
+            insert_one("gym", df_update_github.iloc[0].to_dict())
+
+            st.write('Done')
+
+            df_update_github = None
 
         with col3:
 
-            st.dataframe(df_result,hide_index=True)
+            aux_progess = (df_result['Proposition'].iloc[0] / df_result['Now'].iloc[0])*100 -100
+
+            st.markdown(f"""
+                <div class="card">
+                    <div class="metric">{t("gym_now",lang)}: {df_result['Now'].iloc[0]:.1f} kg</div>
+                    <div class="metric">{t("gym_proposition",lang)}: {df_result['Proposition'].iloc[0]:.1f} kg</div>
+                    <div class="badge">{aux_progess:.1f}% {t("gym_up",lang)}</div>
+                </div>
+                """, unsafe_allow_html=True)
 
         with col4:
 
-            st.markdown("""
-            <style>
-            .center-column {
-                display: flex;
-                justify-content: center;
-            }
-            </style>
-            """, unsafe_allow_html=True)
-
-            st.button("💾​ Save",key=f'save_button_id_{exercise}',on_click=update_github_json,args=(df_update_github,))
+            st.button(t("gym_save",lang),key=f'save_button_id_{exercise}',on_click=insert_one,args=("gym", df_update_github.iloc[0].to_dict()))
 
         with col5:
 
-            st.markdown("""
-            <style>
-            .center-column {
-                display: flex;
-                justify-content: center;
-            }
-            </style>
-            """, unsafe_allow_html=True)
-            
-            if st.session_state.saved.count(f'exercise_saved_{exercise.lower()}') > 0:
-
+            if df_done_check == datetime.now().strftime('%Y-%m-%d'):
                 st.session_state[f'checkbox_id_{exercise}'] = True
             else:
                 st.session_state[f'checkbox_id_{exercise}'] = False
 
-            st.checkbox("Done",key=f'checkbox_id_{exercise}',disabled=True)
+            st.checkbox(t("gym_done", lang), key=f'checkbox_id_{exercise}', disabled=True)
 
         
 

@@ -9,6 +9,121 @@ import pandas as pd
 # # import smtplib
 # # from email.mime.text import MIMEText
 # # from email.mime.multipart import MIMEMultipart
+import psycopg2
+from psycopg2.extras import execute_values
+from contextlib import contextmanager
+import tomllib
+from pathlib import Path
+
+# ─────────────────────────────────────────────
+# LEITURA DO CONFIG.TOML
+# ─────────────────────────────────────────────
+import os
+
+def get_db_config() -> dict:
+    """Lê config do st.secrets (produção) ou do toml local (desenvolvimento)."""
+    try:
+        # Produção: st.secrets disponível
+        return {
+            "host":            st.secrets["SUPABASE_HOST"],
+            "port":            st.secrets.get("SUPABASE_PORT", "5432"),
+            "dbname":          st.secrets.get("SUPABASE_DBNAME", "postgres"),
+            "user":            st.secrets.get("SUPABASE_USER", "postgres"),
+            "password":        st.secrets["SUPABASE_PASSWORD"],
+            "sslmode":         "require",
+            "connect_timeout": 10,
+        }
+    except Exception:
+        # Local: lê do toml
+        CONFIG_PATH = Path("folder_gitignore/config_app.toml")
+        with open(CONFIG_PATH, "rb") as f:
+            config = tomllib.load(f)
+        return {
+            "host":            config["SUPABASE_HOST"],
+            "port":            config.get("SUPABASE_PORT", "5432"),
+            "dbname":          config.get("SUPABASE_DBNAME", "postgres"),
+            "user":            config.get("SUPABASE_USER", "postgres"),
+            "password":        config["SUPABASE_PASSWORD"],
+            "sslmode":         "require",
+            "connect_timeout": 10,
+        }
+
+DB_CONFIG = get_db_config()
+
+# ─────────────────────────────────────────────
+# GERENCIADOR DE CONEXÃO
+# ─────────────────────────────────────────────
+@contextmanager
+def get_connection():
+    """Abre e fecha a conexão automaticamente."""
+    conn = None
+    try:
+        conn = psycopg2.connect(**DB_CONFIG)
+        yield conn
+        conn.commit()
+    except psycopg2.OperationalError as e:
+        print(f"[ERRO] Falha na conexão: {e}")
+        raise
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        print(f"[ERRO] Transação revertida: {e}")
+        raise
+    finally:
+        if conn:
+            conn.close()
+
+
+
+# ─────────────────────────────────────────────
+# FUNÇÕES DE LEITURA
+# ─────────────────────────────────────────────
+def select_all(tabela: str, colunas: list[str] = None) -> list[dict]:
+    """Retorna todos os registros de uma tabela como lista de dicionários."""
+    cols = ", ".join(colunas) if colunas else "*"
+    sql  = f"SELECT {cols} FROM {tabela}"
+ 
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql)
+            colunas_retorno = [desc[0] for desc in cur.description]
+            rows = cur.fetchall()
+ 
+    resultado = [dict(zip(colunas_retorno, row)) for row in rows]
+    # print(f"[OK] {len(resultado)} registro(s) retornado(s) de '{tabela}'.")
+    return resultado
+
+# ─────────────────────────────────────────────
+# FUNÇÕES DE INSERT
+# ─────────────────────────────────────────────
+def insert_one(tabela: str, dados: dict) -> None:
+    """Insere ou atualiza um registro baseado em dt_ymd + exercise."""
+    def sanitize(val):
+        if hasattr(val, 'item'):
+            return val.item()
+        if pd.isna(val):
+            return None
+        return val
+
+    dados = {k: sanitize(v) for k, v in dados.items()}
+
+    colunas       = ", ".join(f'"{k}"' for k in dados.keys())
+    placeholders  = ", ".join(["%s"] * len(dados))
+    updates       = ", ".join(f'"{k}" = EXCLUDED."{k}"' for k in dados.keys() if k not in ("dt_ymd", "exercise"))
+
+    sql = f"""
+        INSERT INTO {tabela} ({colunas})
+        VALUES ({placeholders})
+        ON CONFLICT (dt_ymd, exercise)
+        DO UPDATE SET {updates}
+    """
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql, list(dados.values()))
+    print(f"[OK] 1 registro inserido/atualizado em '{tabela}'.")
+
+
 
 def st_write_justify(text, word='none', color="green"):
     if word != 'none':
