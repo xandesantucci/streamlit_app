@@ -5,7 +5,7 @@ if "lang" not in st.session_state:
         st.session_state.lang = "pt"
 
 pg = st.navigation([
-    st.Page("pages/GYM.py", title=t("gym_title", st.session_state.lang)),
+    st.Page("pages/GYM.py", title="💪" + t("gym_title", st.session_state.lang)),
     st.Page("pages/DIET.py", title=t("diet_title", st.session_state.lang)),
 ])
 

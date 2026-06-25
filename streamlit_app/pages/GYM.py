@@ -11,12 +11,12 @@ from translations import t
 
 st.set_page_config(
     page_title=t("gym_title", st.session_state.lang),
-    # page_icon="💪",
+    page_icon="💪",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-st.markdown('<h1 class="section-header">' + t("gym_title", st.session_state.lang) + '</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="section-header">' + "💪" + t("gym_title", st.session_state.lang) + '</h1>', unsafe_allow_html=True)
 
 df = pd.DataFrame(select_all('gym'))
 

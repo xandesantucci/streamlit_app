@@ -10,7 +10,7 @@ TRANSLATIONS = {
     "lang_en":           {"pt": "🇺🇸 Inglês",          "en": "🇺🇸 English"},
 
     # ── Gym page ──────────────────────────────────────────────────────────────
-    "gym_title":         {"pt": "💪 Academia",              "en": "💪 Gym"},
+    "gym_title":         {"pt": "Academia",              "en": "Gym"},
     "gym_training":      {"pt": "💪 Treino:",          "en": "💪 Training:"},
     "gym_series":        {"pt": "🏋️ Série:",         "en": "🏋️ Serie:"},
     "gym_break":         {"pt": "⏰ Descanso:",        "en": "⏰ Break:"},
