@@ -26,9 +26,9 @@ def get_db_config() -> dict:
         # Produção: st.secrets disponível
         return {
             "host":            st.secrets["SUPABASE_HOST"],
-            "port":            st.secrets.get("SUPABASE_PORT", "5432"),
+            "port":            st.secrets.get("SUPABASE_PORT", "6543"),
             "dbname":          st.secrets.get("SUPABASE_DBNAME", "postgres"),
-            "user":            st.secrets.get("SUPABASE_USER", "postgres"),
+            "user":            st.secrets.get("SUPABASE_USER", "postgres.qyzfchjuhljfkgmjlwcs"),
             "password":        st.secrets["SUPABASE_PASSWORD"],
             "sslmode":         "require",
             "connect_timeout": 10,
