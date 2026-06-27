@@ -122,7 +122,7 @@ st.markdown("""
     font-size: 22px;
     font-weight: 800;
     color: #22C55E;
-    margin-top: 10px;
+    margin-top: 2px;
 }
 
 .badge {
@@ -131,9 +131,9 @@ st.markdown("""
     border-radius: 999px;
     background-color: #22C55E;
     color: #0F172A;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 700;
-    margin-top: 10px;
+    margin-top: 4px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -156,14 +156,14 @@ for exercise in resultado['Exercise'].unique():
     
         with col1:
 
-            # st.markdown("""
-            # <style>
-            # .center-column {
-            #     display: flex;
-            #     justify-content: center;
-            # }
-            # </style>
-            # """, unsafe_allow_html=True)
+            st.markdown("""
+            <style>
+            .center-column {
+                display: flex;
+                justify-content: center;
+            }
+            </style>
+            """, unsafe_allow_html=True)
 
             if st.button(t("gym_start",lang),key=f'exercise_button_id_{exercise}'):
                         
@@ -215,7 +215,7 @@ for exercise in resultado['Exercise'].unique():
 
             st.write('Done')
 
-            df_update_github = None
+            st.session_state.historico = []
 
         with col3:
 
@@ -231,9 +231,27 @@ for exercise in resultado['Exercise'].unique():
 
         with col4:
 
+            st.markdown("""
+            <style>
+            .center-column {
+                display: flex;
+                justify-content: center;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+
             st.button(t("gym_save",lang),key=f'save_button_id_{exercise}',on_click=insert_one,args=("gym", df_update_github.iloc[0].to_dict()))
 
         with col5:
+
+            st.markdown("""
+            <style>
+            .center-column {
+                display: flex;
+                justify-content: center;
+            }
+            </style>
+            """, unsafe_allow_html=True)
 
             if df_done_check == datetime.now().strftime('%Y-%m-%d'):
                 st.session_state[f'checkbox_id_{exercise}'] = True
