@@ -152,7 +152,7 @@ for exercise in resultado['Exercise'].unique():
         
         placeholder = st.empty()
 
-        col1, col2, col3, col4, col5      = st.columns([1,1.5,7,1,1])
+        col1, col2, col3, col4, col5, col6      = st.columns([1,1.5,5,1,1,1])
     
         with col1:
 
@@ -219,17 +219,24 @@ for exercise in resultado['Exercise'].unique():
 
         with col3:
 
-            aux_progess = (df_result['Proposition'].iloc[0] / df_result['Now'].iloc[0])*100 -100
-
             st.markdown(f"""
                 <div class="card">
                     <div class="metric">{t("gym_now",lang)}: {df_result['Now'].iloc[0]:.1f} kg</div>
                     <div class="metric">{t("gym_proposition",lang)}: {df_result['Proposition'].iloc[0]:.1f} kg</div>
-                    <div class="badge">{aux_progess:.1f}% {t("gym_up",lang)}</div>
                 </div>
                 """, unsafe_allow_html=True)
 
         with col4:
+
+            aux_progess = (df_result['Proposition'].iloc[0] / df_result['Now'].iloc[0])*100 -100
+
+            st.markdown(f"""
+                <div class="card">
+                    <div class="badge">{aux_progess:.1f}%</div>
+                </div>
+                """, unsafe_allow_html=True)
+
+        with col5:
 
             st.markdown("""
             <style>
@@ -242,7 +249,7 @@ for exercise in resultado['Exercise'].unique():
 
             st.button(t("gym_save",lang),key=f'save_button_id_{exercise}',on_click=insert_one,args=("gym", df_update_github.iloc[0].to_dict()))
 
-        with col5:
+        with col6:
 
             st.markdown("""
             <style>
@@ -262,47 +269,47 @@ for exercise in resultado['Exercise'].unique():
 
         
 
-col1, col2 = st.columns([2, 1.5])
+# col1, col2 = st.columns([2, 1.5])
     
-with col1:
+# with col1:
     
-    df_graph = df
-    # df_graph = df[df['exercise'] == radio_exercise.lower()]
+#     df_graph = df
+#     # df_graph = df[df['exercise'] == radio_exercise.lower()]
 
 
-    df_graph['dt_ymd'] = pd.to_datetime(df_graph['dt_ymd'])
+#     df_graph['dt_ymd'] = pd.to_datetime(df_graph['dt_ymd'])
 
-    df_graph = df_graph.sort_values(['dt_ymd'])
+#     df_graph = df_graph.sort_values(['dt_ymd'])
 
-    fig = px.line(
-        df_graph,
-        x='dt_ymd',
-        y='weight',
-        color='exercise'
-    )
+#     fig = px.line(
+#         df_graph,
+#         x='dt_ymd',
+#         y='weight',
+#         color='exercise'
+#     )
 
-    fig.update_xaxes(
-        tickformat="%d/%m/%y"
-    )
+#     fig.update_xaxes(
+#         tickformat="%d/%m/%y"
+#     )
 
-    st.plotly_chart(fig, width='stretch')
+#     st.plotly_chart(fig, width='stretch')
 
-with col2:
+# with col2:
 
+try:
+    resultado_dataframe = resultado[['Exercise','3 Weeks','Last', 'Now', 'Dif']]
+except:
     try:
-        resultado_dataframe = resultado[['Exercise','3 Weeks','Last', 'Now', 'Dif']]
+        resultado_dataframe = resultado[['Exercise','Last', 'Now', 'Dif']]
     except:
-        try:
-            resultado_dataframe = resultado[['Exercise','Last', 'Now', 'Dif']]
-        except:
-            resultado_dataframe = resultado[['Exercise', 'Now', 'Dif']]
+        resultado_dataframe = resultado[['Exercise', 'Now', 'Dif']]
 
 
-    st.dataframe(resultado_dataframe.style.format({
-    '3 Weeks': '{:.1f}',
-    'Last': '{:.1f}',
-    'Now': '{:.1f}',
-    'Dif': '{:.1f}'
+st.dataframe(resultado_dataframe.style.format({
+'3 Weeks': '{:.1f}',
+'Last': '{:.1f}',
+'Now': '{:.1f}',
+'Dif': '{:.1f}'
 }).highlight_between('Dif',left=0.1, right=10,color='green'),hide_index=True,height=(len(resultado_dataframe) + 1) * 36)
 
 
