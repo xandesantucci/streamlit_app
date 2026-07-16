@@ -40,9 +40,9 @@ def get_db_config() -> dict:
             config = tomllib.load(f)
         return {
             "host":            config["SUPABASE_HOST"],
-            "port":            config.get("SUPABASE_PORT", "5432"),
+            "port":            config.get("SUPABASE_PORT", "6543"),
             "dbname":          config.get("SUPABASE_DBNAME", "postgres"),
-            "user":            config.get("SUPABASE_USER", "postgres"),
+            "user":            config.get("SUPABASE_USER", "postgres.qyzfchjuhljfkgmjlwcs"),
             "password":        config["SUPABASE_PASSWORD"],
             "sslmode":         "require",
             "connect_timeout": 10,
