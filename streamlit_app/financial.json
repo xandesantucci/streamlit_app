@@ -488,5 +488,12 @@
     "detail": "Mercado Livre",
     "modifier": 0.5,
     "value": 634
+  },
+  {
+    "anomes": "",
+    "type": "",
+    "detail": "Imposto",
+    "modifier": "",
+    "value": ""
   }
 ]
