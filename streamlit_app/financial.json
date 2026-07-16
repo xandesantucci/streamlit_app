@@ -541,7 +541,7 @@
     "detail": "restaurantes",
     "modifier": 0.5,
     "value": 715.27,
-    "": 892.6650000000001
+    "": ""
   },
   {
     "anomes": 202606,
@@ -573,6 +573,14 @@
     "detail": "",
     "modifier": "",
     "value": "",
-    "": 4481.517
+    "": 4581.517
+  },
+  {
+    "anomes": "",
+    "type": "",
+    "detail": "",
+    "modifier": "",
+    "value": "",
+    "": 0
   }
 ]
