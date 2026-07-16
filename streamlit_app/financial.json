@@ -493,7 +493,7 @@
     "anomes": "",
     "type": "",
     "detail": "Imposto",
-    "modifier": "",
+    "modifier": 1,
     "value": 236.35
   }
 ]
