@@ -1,30 +1,56 @@
+
 import streamlit as st
+from streamlit_image_select import image_select
 from translations import t
 
 if "lang" not in st.session_state:
         st.session_state.lang = "pt"
+
+if not st.user.is_logged_in:
+    st.login('google')
+    st.stop()
 
 pg = st.navigation([
     st.Page("pages/GYM.py", title="💪" + t("gym_title", st.session_state.lang)),
     st.Page("pages/DIET.py", title=t("diet_title", st.session_state.lang)),
 ])
 
+# Captura qual botão foi clicado
+
 with st.sidebar:
 
-    col_pt, col_en = st.columns(2)
- 
-    with col_pt:
-        pt_type = "primary" if st.session_state.lang == "pt" else "secondary"
-        if st.button('BR', key="lang_btn_pt", width='stretch', type=pt_type):
-            st.session_state.lang = "pt"
-            st.rerun()
+    if "valor_antigo" not in st.session_state:
+        st.session_state.valor_antigo = "https://flagcdn.com/w160/br.png"
 
-    with col_en:
-        en_type = "primary" if st.session_state.lang == "en" else "secondary"
-        if st.button("EN", key="lang_btn_en", width='stretch', type=en_type):
-            st.session_state.lang = "en"
-            st.rerun()
+    lang = image_select(
+        label="Language / Idioma",
+        images=[
+            "https://flagcdn.com/w160/br.png",
+            "https://flagcdn.com/w160/gb.png",
+        ],
+        captions=["", ""],
+        use_container_width=True,
+    )
+
+    if lang.endswith("br.png"):
+        st.session_state.lang = "pt"
+        # st.rerun()
+
+    elif lang.endswith("gb.png"):
+        st.session_state.lang = "en"
+        # st.rerun()
+        
+
+    if lang != st.session_state.valor_antigo:
+
+        st.session_state.valor_antigo = lang
+        st.rerun()
+
+
+    if st.button("Sair",width='stretch'):
+        st.logout() 
 
     st.link_button('DEV: Alexandre Santucci','https://www.linkedin.com/in/alexandre-santucci-breves-oliveira/',width='stretch')
+
 
 pg.run()

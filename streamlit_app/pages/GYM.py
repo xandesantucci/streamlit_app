@@ -20,6 +20,8 @@ st.markdown('<h1 class="section-header">' + "💪" + t("gym_title", st.session_s
 
 df = pd.DataFrame(select_all('gym'))
 
+st.write(st.user.email)
+
 lang = st.session_state.lang
 
 col1, col2, col3 = st.columns([1, 1, 1])
