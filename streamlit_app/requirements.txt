@@ -9,3 +9,4 @@ pygithub
 psycopg2-binary
 Authlib>=1.3.2,!=1.6.6
 streamlit_image_select
+traceback

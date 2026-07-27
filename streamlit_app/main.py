@@ -5,12 +5,15 @@ from translations import t
 
 if "lang" not in st.session_state:
         st.session_state.lang = "pt"
+import traceback
+
 try:
     if not st.user.is_logged_in:
         st.login('google')
         st.stop()
 except Exception as e:
     st.error("Error: " + str(e))
+    st.code(traceback.format_exc())
 
 pg = st.navigation([
     st.Page("pages/GYM.py", title="💪" + t("gym_title", st.session_state.lang)),
