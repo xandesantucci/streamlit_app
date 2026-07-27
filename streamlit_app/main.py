@@ -5,10 +5,12 @@ from translations import t
 
 if "lang" not in st.session_state:
         st.session_state.lang = "pt"
-
-if not st.user.is_logged_in:
-    st.login('google')
-    st.stop()
+try:
+    if not st.user.is_logged_in:
+        st.login('google')
+        st.stop()
+except Exception as e:
+    st.error("Error: " + str(e))
 
 pg = st.navigation([
     st.Page("pages/GYM.py", title="💪" + t("gym_title", st.session_state.lang)),
@@ -47,8 +49,8 @@ with st.sidebar:
         st.rerun()
 
 
-    if st.button("Sair",width='stretch'):
-        st.logout() 
+    # if st.button("Sair",width='stretch'):
+    #     st.logout() 
 
     st.link_button('DEV: Alexandre Santucci','https://www.linkedin.com/in/alexandre-santucci-breves-oliveira/',width='stretch')
 
