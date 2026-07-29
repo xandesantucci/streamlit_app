@@ -8,6 +8,7 @@ TRANSLATIONS = {
     "lang_label":        {"pt": "🌐 Idioma",          "en": "🌐 Language"},
     "lang_pt":           {"pt": "🇧🇷 Português",       "en": "🇧🇷 Portuguese"},
     "lang_en":           {"pt": "🇺🇸 Inglês",          "en": "🇺🇸 English"},
+    "calendar":         {"pt": "Calendário de Treinos", "en": "Training Calendar"},
 
     # ── Gym page ──────────────────────────────────────────────────────────────
     "gym_title":         {"pt": "Academia",              "en": "Gym"},

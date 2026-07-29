@@ -31,7 +31,15 @@ with col1:
 
 with col2:
 
-    list_group = st.selectbox(t("gym_series",lang), np.sort(df['group'].unique()))
+    if "grupo_sugerido" in st.session_state:
+        st.session_state["grupo_sugerido"]
+        index_grupo_df = np.where(df['group'] == st.session_state["grupo_sugerido"])[0][0]
+        st.session_state["grupo_sugerido"] = None
+    else:
+        index_grupo_df = 0
+    
+
+    list_group = st.selectbox(t("gym_series",lang), np.sort(df['group'].unique()), index=index_grupo_df)
     df = df[df['group'] == list_group]
 
 with col3:
@@ -267,34 +275,6 @@ for exercise in resultado['Exercise'].unique():
 
             st.checkbox(t("gym_done", lang), key=f'checkbox_id_{exercise}', disabled=True)
 
-        
-
-# col1, col2 = st.columns([2, 1.5])
-    
-# with col1:
-    
-#     df_graph = df
-#     # df_graph = df[df['exercise'] == radio_exercise.lower()]
-
-
-#     df_graph['dt_ymd'] = pd.to_datetime(df_graph['dt_ymd'])
-
-#     df_graph = df_graph.sort_values(['dt_ymd'])
-
-#     fig = px.line(
-#         df_graph,
-#         x='dt_ymd',
-#         y='weight',
-#         color='exercise'
-#     )
-
-#     fig.update_xaxes(
-#         tickformat="%d/%m/%y"
-#     )
-
-#     st.plotly_chart(fig, width='stretch')
-
-# with col2:
 
 try:
     resultado_dataframe = resultado[['Exercise','3 Weeks','Last', 'Now', 'Dif']]
@@ -311,93 +291,4 @@ st.dataframe(resultado_dataframe.style.format({
 'Now': '{:.1f}',
 'Dif': '{:.1f}'
 }).highlight_between('Dif',left=0.1, right=10,color='green'),hide_index=True,height=(len(resultado_dataframe) + 1) * 36)
-
-
-
-# col_c1, col_c2 = st.columns([7,3])
-# for line in range(0,len(resultado)):
-#     with col_c1:
-
-        
-#             df_resultado_proposto = resultado[['Exercise','Now','Proposto']]
-            
-#             st.dataframe(df_resultado_proposto.iloc[[line]].style.format({'Now': '{:.1f}','Proposto': '{:.0f}'}).highlight_between('Proposto',left=0, right=0,color='green').hide(axis="columns"),hide_index=True,width="content")
-            
-#     with col_c2:
-
-#         if st.button("▶️ Start",key=f'my_button_id_{radio_exercise}'):
-            
-#             horario_fim = datetime.now() + timedelta(seconds=segundos)
-
-#             for i in range(segundos, -1, -1):
-
-#                 mins, secs = divmod(i, 60)
-
-#                 placeholder.markdown(
-#                     f"""
-#                     <h1 style='text-align:center;font-size:80px;'>
-#                         {mins:02d}:{secs:02d}
-#                     </h1>
-
-#                     <h3 style='text-align:center;'>
-#                         Termina às {horario_fim.strftime("%H:%M:%S")}
-#                     </h3>
-#                     """,
-#                     unsafe_allow_html=True
-#                 )
-
-#                 time.sleep(1)
-#         # st.write(f'my_button_id_{line}')
-#             # # adiciona nova linha no histórico
-#             st.session_state.historico.append(f'my_button_id_{radio_exercise}')
-#         # st.write('')
-#         # st.write('')
-
-#         quantidade = st.session_state.historico.count(f'my_button_id_{radio_exercise}')
-
-#         st.write(quantidade)
-#         st.write(resultado['Series'][line])
-#         if resultado['Series'][line] == quantidade:
-
-#         # st.write(quantidade)
-#             st.checkbox('done',value=True,key=f'my_checkbox_id_{radio_exercise}')
-#         else:
-#             st.checkbox('done',key=f'my_checkbox_id_{radio_exercise}')
-
-    # st.write(resultado['Exercise'][line])
-    # st.write(resultado['Proposto'][line])
-
-    # st.write(line)
-
-# with col3:
-#     for line in range(0,len(resultado)):   
-#         if st.button("▶️ Start",key=f'my_button_id_{line}'):
-
-#             horario_fim = datetime.now() + timedelta(seconds=segundos)
-
-#             for i in range(segundos, -1, -1):
-
-#                 mins, secs = divmod(i, 60)
-
-#                 placeholder.markdown(
-#                     f"""
-#                     <h1 style='text-align:center;font-size:80px;'>
-#                         {mins:02d}:{secs:02d}
-#                     </h1>
-
-#                     <h3 style='text-align:center;'>
-#                         Termina às {horario_fim.strftime("%H:%M:%S")}
-#                     </h3>
-#                     """,
-#                     unsafe_allow_html=True
-#                 )
-
-#                 time.sleep(1)
-
-#             # adiciona nova linha no histórico
-#             st.session_state.historico = st.session_state.historico + 1
-
-# # printa todas as execuções
-# for item in st.session_state.historico:
-#     st.success(item)
 
