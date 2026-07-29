@@ -101,7 +101,7 @@ except:
 
 resultado['Proposition'] = np.where(
     resultado['Proposition'] == 0,
-    resultado['Now'] * 1.1,
+    resultado['Now'] * 1.08,
     resultado['Now']
 )
 # else:
@@ -111,40 +111,44 @@ resultado['Exercise'] = resultado['Exercise'].str.capitalize()
 
 # df_exdad = resultado.copy()
 
-st.markdown("""
-<style>
-.card {
-    background: linear-gradient(145deg, #1E293B, #0F172A);
-    padding: 20px;
-    border-radius: 16px;
-    border: 1px solid #263449;
-    box-shadow: 0px 6px 18px rgba(0,0,0,0.35);
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-}
+# st.markdown("""
+# <style>
+# .card {
+#     background: linear-gradient(145deg, #1E293B, #0F172A);
+#     padding: 20px;
+#     border-radius: 16px;
+#     border: 1px solid #263449;
+#     box-shadow: 0px 6px 18px rgba(0,0,0,0.35);
+#     margin-bottom: 15px;
+#     display: flex;
+#     align-items: center;
+#     justify-content: space-between;
+#     gap: 16px;
+# }
 
-.metric {
-    font-size: 22px;
-    font-weight: 800;
-    color: #22C55E;
-    margin-top: 2px;
-}
+# .metric {
+#     font-size: 22px;
+#     font-weight: 800;
+#     color: #22C55E;
+#     margin-top: 2px;
+# }
 
-.badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background-color: #22C55E;
-    color: #0F172A;
-    font-size: 15px;
-    font-weight: 700;
-    margin-top: 4px;
-}
-</style>
-""", unsafe_allow_html=True)
+# .badge {
+#     display: inline-block;
+#     padding: 4px 10px;
+#     border-radius: 999px;
+#     background-color: #22C55E;
+#     color: #0F172A;
+#     font-size: 15px;
+#     font-weight: 700;
+#     margin-top: 4px;
+# }
+# </style>
+# """, unsafe_allow_html=True)
+
+
+
+
 
 
 if "historico" not in st.session_state:
@@ -160,7 +164,7 @@ for exercise in resultado['Exercise'].unique():
         
         placeholder = st.empty()
 
-        col1, col2, col3, col4, col5, col6      = st.columns([1,1.5,5,1,1,1])
+        col1, col2, col3, col4, col5, col6      = st.columns([1,1,2.5,2.5,1,1])
     
         with col1:
 
@@ -173,7 +177,7 @@ for exercise in resultado['Exercise'].unique():
             </style>
             """, unsafe_allow_html=True)
 
-            if st.button(t("gym_start",lang),key=f'exercise_button_id_{exercise}'):
+            if st.button(t("gym_start",lang),key=f'exercise_button_id_{exercise}',width='stretch'):
                         
                         horario_fim = datetime.now() + timedelta(seconds=segundos) - timedelta(hours=3)
 
@@ -205,8 +209,9 @@ for exercise in resultado['Exercise'].unique():
 
         df_update_github = df[df['exercise'] == exercise.lower()].reset_index(drop=True)
 
-        df_update_github = df_update_github.sort_values('dt_ymd', ascending=False).reset_index(drop=True)
+        df_update_github = df_update_github.sort_values('dt_ymd', ascending=True).reset_index(drop=True)
         df_update_github = df_update_github.tail(1).reset_index(drop=True)
+
         df_done_check = df_update_github['dt_ymd'].iloc[0]
         df_update_github['weight'] = new_weight
         df_update_github['dt_ymd'] = datetime.now().strftime('%Y-%m-%d')
@@ -227,22 +232,11 @@ for exercise in resultado['Exercise'].unique():
 
         with col3:
 
-            st.markdown(f"""
-                <div class="card">
-                    <div class="metric">{t("gym_now",lang)}: {df_result['Now'].iloc[0]:.1f} kg</div>
-                    <div class="metric">{t("gym_proposition",lang)}: {df_result['Proposition'].iloc[0]:.1f} kg</div>
-                </div>
-                """, unsafe_allow_html=True)
+            st.metric("🏋️ Atual", f"{df_result['Now'].iloc[0]:.1f} kg", border=True)
 
         with col4:
 
-            aux_progess = (df_result['Proposition'].iloc[0] / df_result['Now'].iloc[0])*100 -100
-
-            st.markdown(f"""
-                <div class="card">
-                    <div class="badge">{aux_progess:.1f}%</div>
-                </div>
-                """, unsafe_allow_html=True)
+            st.metric("🎯 Meta", f"{df_result['Proposition'].iloc[0]:.1f} kg", delta='8%', width="stretch", height="content",border=True)
 
         with col5:
 
@@ -251,11 +245,12 @@ for exercise in resultado['Exercise'].unique():
             .center-column {
                 display: flex;
                 justify-content: center;
+                align-items:center;
             }
             </style>
             """, unsafe_allow_html=True)
 
-            st.button(t("gym_save",lang),key=f'save_button_id_{exercise}',on_click=insert_one,args=("gym", df_update_github.iloc[0].to_dict()))
+            st.button(t("gym_save",lang),key=f'save_button_id_{exercise}',on_click=insert_one,args=("gym", df_update_github.iloc[0].to_dict()),width='stretch')
 
         with col6:
 
@@ -264,16 +259,17 @@ for exercise in resultado['Exercise'].unique():
             .center-column {
                 display: flex;
                 justify-content: center;
+                align-items:center;
             }
             </style>
             """, unsafe_allow_html=True)
 
-            if df_done_check == datetime.now().strftime('%Y-%m-%d'):
+            if df_done_check == datetime.now().date():
                 st.session_state[f'checkbox_id_{exercise}'] = True
             else:
                 st.session_state[f'checkbox_id_{exercise}'] = False
 
-            st.checkbox(t("gym_done", lang), key=f'checkbox_id_{exercise}', disabled=True)
+            st.checkbox(t("gym_done", lang), key=f'checkbox_id_{exercise}',width='stretch')
 
 
 try:
@@ -290,5 +286,12 @@ st.dataframe(resultado_dataframe.style.format({
 'Last': '{:.1f}',
 'Now': '{:.1f}',
 'Dif': '{:.1f}'
-}).highlight_between('Dif',left=0.1, right=10,color='green'),hide_index=True,height=(len(resultado_dataframe) + 1) * 36)
+}).highlight_between('Dif',left=0.1, right=10,color='green'),hide_index=True,height=(len(resultado_dataframe) + 1) * 36,
+    column_config={
+        "Exercise": st.column_config.TextColumn(width="medium"),
+        "3 Weeks": st.column_config.NumberColumn(width="small"),
+        "Last": st.column_config.NumberColumn(width="small"),
+        "Now": st.column_config.NumberColumn(width="small"),
+        "Dif": st.column_config.NumberColumn(width="small"),
+    })
 
