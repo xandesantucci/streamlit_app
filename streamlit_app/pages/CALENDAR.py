@@ -99,10 +99,11 @@ def montar_eventos(df: pd.DataFrame, sugestao_grupo):
         cor = cor_por_grupo(row["group"])
         eventos.append(
             {
-                "title": f"Treino {row['group']}",
+                "title": f"- {row['group']} -",
                 "start": row["dt_ymd"].isoformat(),
                 "end": row["dt_ymd"].isoformat(),
                 "color": cor,
+                "textColor": "#030303",
                 "extendedProps": {"group": row["group"], "number": row["nbr_training"]},
             }
         )
@@ -111,11 +112,11 @@ def montar_eventos(df: pd.DataFrame, sugestao_grupo):
     if not treinou_hoje and sugestao_grupo:
         eventos.append(
             {
-                "title": f"⭐ Sugestão: Treino {sugestao_grupo}",
+                "title": f"⭐ {sugestao_grupo}",
                 "start": hoje.isoformat(),
                 "end": hoje.isoformat(),
                 "color": "#444444",
-                "textColor": "#ffffff",
+                "textColor": "#FFFFFF",
                 "extendedProps": {"sugestao": True, "group": sugestao_grupo},
             }
         )
@@ -140,14 +141,14 @@ def render_pagina_calendario(df: pd.DataFrame, df_dim: pd.DataFrame):
     hoje = date.today()
     treinou_hoje = hoje in df["dt_ymd"].values
 
-    col1, col2 = st.columns([3, 1])
-    with col2:
-        st.metric("Hoje", hoje.strftime("%d/%m/%Y"))
-        if treinou_hoje:
-            grupo_hoje = df.loc[df["dt_ymd"] == hoje, "group"].iloc[0]
-            st.success(f"Treino de hoje: **{grupo_hoje}**")
-        elif sugestao:
-            st.warning(f"Próximo treino sugerido: **{sugestao}**")
+    # col1, col2 = st.columns([3, 1])
+    # with col2:
+    st.metric("Hoje", hoje.strftime("%d/%m/%Y"))
+    if treinou_hoje:
+        grupo_hoje = df.loc[df["dt_ymd"] == hoje, "group"].iloc[0]
+        st.success(f"Treino de hoje: **{grupo_hoje}**")
+    elif sugestao:
+        st.warning(f"Próximo treino: **{sugestao}**")
 
     eventos = montar_eventos(df, sugestao)
 
@@ -164,12 +165,12 @@ def render_pagina_calendario(df: pd.DataFrame, df_dim: pd.DataFrame):
         },
     }
 
-    with col1:
-        estado_calendario = calendar(
-            events=eventos,
-            options=opcoes_calendario,
-            key="calendario_treinos",
-        )
+    # with col1:
+    estado_calendario = calendar(
+        events=eventos,
+        options=opcoes_calendario,
+        key="calendario_treinos",
+    )
 
     # ------------------------------------------------------------------
     # Detalhe do dia clicado
