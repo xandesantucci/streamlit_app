@@ -13,9 +13,10 @@ try:
         st.stop()
 except Exception as e:
     st.error("Error: " + str(e))
-    st.code(traceback.format_exc())
+    # st.code(traceback.format_exc())
 
 pg = st.navigation([
+    st.Page("pages/CALENDAR.py", title="📅" + t("calendar", st.session_state.lang)),
     st.Page("pages/GYM.py", title="💪" + t("gym_title", st.session_state.lang)),
     st.Page("pages/DIET.py", title=t("diet_title", st.session_state.lang)),
 ])

@@ -73,8 +73,110 @@ def get_connection():
         if conn:
             conn.close()
 
+from psycopg2 import sql
 
 
+def _colunas_da_tabela(cur, tabela: str) -> list[str]:
+    """Retorna os nomes das colunas de uma tabela."""
+    cur.execute(sql.SQL("SELECT * FROM {} LIMIT 0").format(sql.Identifier(tabela)))
+    return [desc[0] for desc in cur.description]
+
+
+def select_fato_com_dimensoes(fato: str, dimensoes: list[str]) -> list[dict]:
+    """
+    Retorna a tabela fato com as colunas das dimensões (LEFT JOIN).
+    Cada dimensão liga em qualquer tabela já incluída (fato ou outra dimensão)
+    pelas colunas 'cd_*' em comum.
+    """
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cols_fato = _colunas_da_tabela(cur, fato)
+
+            select_parts = [
+                sql.SQL("f.{}").format(sql.Identifier(c)) for c in cols_fato
+            ]
+            nomes_usados = set(cols_fato)
+            joins = []
+
+            # tabelas já ligadas: (nome, alias, colunas) -> começa pela fato
+            ligadas = [(fato, "f", cols_fato)]
+            pendentes = list(dimensoes)
+            contador = 0
+
+            while pendentes:
+                progresso = False
+
+                for dim in list(pendentes):
+                    cols_dim = _colunas_da_tabela(cur, dim)
+
+                    # procura a primeira tabela já ligada com chave cd_* em comum
+                    pai = None
+                    for nome_pai, alias_pai, cols_pai in ligadas:
+                        chaves = [
+                            c for c in cols_dim
+                            if c.lower().startswith("cd_") and c in cols_pai
+                        ]
+                        if chaves:
+                            pai = (alias_pai, chaves)
+                            break
+
+                    if pai is None:
+                        continue  # tenta na próxima rodada
+
+                    alias_pai, chaves = pai
+                    alias = f"d{contador}"
+                    contador += 1
+
+                    condicao = sql.SQL(" AND ").join(
+                        sql.SQL("{p}.{c} = {a}.{c}").format(
+                            p=sql.Identifier(alias_pai),
+                            c=sql.Identifier(k),
+                            a=sql.Identifier(alias),
+                        )
+                        for k in chaves
+                    )
+                    joins.append(
+                        sql.SQL("LEFT JOIN {t} AS {a} ON {cond}").format(
+                            t=sql.Identifier(dim),
+                            a=sql.Identifier(alias),
+                            cond=condicao,
+                        )
+                    )
+
+                    for c in cols_dim:
+                        # não repete chaves cd_* que já estão no resultado
+                        if c in chaves or (c.lower().startswith("cd_") and c in nomes_usados):
+                            continue
+                        nome = c if c not in nomes_usados else f"{dim}_{c}"
+                        nomes_usados.add(nome)
+                        select_parts.append(
+                            sql.SQL("{a}.{c} AS {n}").format(
+                                a=sql.Identifier(alias),
+                                c=sql.Identifier(c),
+                                n=sql.Identifier(nome),
+                            )
+                        )
+
+                    ligadas.append((dim, alias, cols_dim))
+                    pendentes.remove(dim)
+                    progresso = True
+
+                if not progresso:
+                    raise ValueError(
+                        f"Não encontrei chave 'cd_*' em comum para ligar: {pendentes}"
+                    )
+
+            query = sql.SQL("SELECT {cols} FROM {fato} AS f {joins}").format(
+                cols=sql.SQL(", ").join(select_parts),
+                fato=sql.Identifier(fato),
+                joins=sql.SQL(" ").join(joins),
+            )
+
+            cur.execute(query)
+            colunas_retorno = [desc[0] for desc in cur.description]
+            rows = cur.fetchall()
+
+    return [dict(zip(colunas_retorno, row)) for row in rows]
 # ─────────────────────────────────────────────
 # FUNÇÕES DE LEITURA
 # ─────────────────────────────────────────────
