@@ -3,7 +3,7 @@ import pandas as pd
 # from pandas.tseries.offsets import DateOffset
 from datetime import datetime, timedelta
 
-from utils import st_write_justify,update_github_json,select_all,insert_one
+from utils import st_write_justify,update_github_json,select_all,insert_one, select_fato_com_dimensoes
 import time
 import numpy as np
 import plotly.express as px
@@ -18,7 +18,8 @@ st.set_page_config(
 
 st.markdown('<h1 class="section-header">' + "💪" + t("gym_title", st.session_state.lang) + '</h1>', unsafe_allow_html=True)
 
-df = pd.DataFrame(select_all('gym'))
+# df = pd.DataFrame(select_all('gym'))
+df = pd.DataFrame(select_fato_com_dimensoes("fct_training", ["dim_training", "dim_exercise"]))
 
 lang = st.session_state.lang
 
@@ -26,8 +27,8 @@ col1, col2, col3 = st.columns([1, 1, 1])
 
 with col1:
 
-    st.selectbox(t("gym_training",lang), options=np.sort(df['number'].unique())[::-1],key="select_traine_page")
-    df = df[df['number'] == st.session_state.select_traine_page]
+    st.selectbox(t("gym_training",lang), options=np.sort(df['nbr_training'].unique())[::-1],key="select_traine_page")
+    df = df[df['nbr_training'] == st.session_state.select_traine_page]
 
 with col2:
 
@@ -49,24 +50,23 @@ with col3:
 ultimos = df.groupby('exercise').tail(3)
 
 # Criar ranking dentro do exercício
-ultimos['ordem'] = ultimos.groupby(['exercise','series','exercise_order']).cumcount() + 1
+ultimos['ordem'] = ultimos.groupby(['exercise','nbr_series','order_exercise']).cumcount() + 1
 
 # Pivotar
 resultado = ultimos.pivot(
-    index=['exercise','series','exercise_order'],
+    index=['exercise','nbr_series','order_exercise'],
     columns='ordem',
     values='weight'
 ).reset_index()
 
-resultado = resultado.sort_values(['exercise_order']).reset_index(drop=True)
-
+resultado = resultado.sort_values(['order_exercise']).reset_index(drop=True)
 
 try:
     # Renomear colunas
     resultado.columns = [
         'Exercise',
         'Series',
-        'exercise_order',
+        'order_exercise',
         '3 Weeks',
         'Last',
         'Now'
@@ -76,7 +76,7 @@ except:
         resultado.columns = [
             'Exercise',
             'Series',
-            'exercise_order',
+            'order_exercise',
             'Last',
             'Now'
         ]
@@ -84,11 +84,14 @@ except:
         resultado.columns = [
             'Exercise',
             'Series',
-            'exercise_order',
+            'order_exercise',
             'Now'
         ]
 
-resultado['Dif'] = resultado['Now'] - resultado['Last']
+try:
+    resultado['Dif'] = resultado['Now'] - resultado['Last']
+except:
+    resultado['Dif'] = 0
 
 try:
     resultado['Proposition'] = np.where(
@@ -207,14 +210,23 @@ for exercise in resultado['Exercise'].unique():
 
             new_weight = st.number_input(t("gym_weight",lang),value=df_result['Now'].iloc[0],step=0.5,key=f'exercise_number_id_{exercise}')
 
-        df_update_github = df[df['exercise'] == exercise.lower()].reset_index(drop=True)
+        # df_fct_update = pd.DataFrame(select_all("fct_training"))
 
-        df_update_github = df_update_github.sort_values('dt_ymd', ascending=True).reset_index(drop=True)
-        df_update_github = df_update_github.tail(1).reset_index(drop=True)
+        # df_update_github = df[df['exercise'] == exercise.lower()].reset_index(drop=True)
+        # df_update_github
+        fct_cd_training = df['cd_training'][df['exercise'] == exercise.lower()].reset_index(drop=True).iloc[0]
+        # df_aux
 
-        df_done_check = df_update_github['dt_ymd'].iloc[0]
-        df_update_github['weight'] = new_weight
-        df_update_github['dt_ymd'] = datetime.now().strftime('%Y-%m-%d')
+        # df_update_github = df_update_github.sort_values('dt_ymd', ascending=True).reset_index(drop=True)
+        # df_update_github = df_update_github.tail(1).reset_index(drop=True)
+
+        fct_dt_ymd = df['dt_ymd'][df['exercise'] == exercise.lower()].reset_index(drop=True).iloc[0]
+        # df_update_github['weight'] = new_weight
+        # df_update_github['dt_ymd'] = datetime.now().strftime('%Y-%m-%d')
+
+        data_fct_update = {'dt_ymd':datetime.now().strftime('%Y-%m-%d'),
+                           'cd_training':fct_cd_training,
+                           'weight':new_weight}
 
         df_data = resultado[resultado['Exercise'] == exercise].reset_index()
 
@@ -224,19 +236,26 @@ for exercise in resultado['Exercise'].unique():
 
             st.write('Updating...')
 
-            insert_one("gym", df_update_github.iloc[0].to_dict())
+            insert_one("fct_training", data_fct_update)
+
+            # insert_one("gym", df_update_github.iloc[0].to_dict())
 
             st.write('Done')
 
             st.session_state.historico = []
 
         with col3:
-
-            st.metric("🏋️ Atual", f"{df_result['Now'].iloc[0]:.1f} kg", border=True)
-
+            
+            if pd.isna(df_result['Now'].iloc[0]):
+                st.metric("🏋️ Atual", "-", border=True)
+            else:
+                st.metric("🏋️ Atual", f"{df_result['Now'].iloc[0]:.1f} kg", border=True)
+                
         with col4:
-
-            st.metric("🎯 Meta", f"{df_result['Proposition'].iloc[0]:.1f} kg", delta='8%', width="stretch", height="content",border=True)
+            if pd.isna(df_result['Proposition'].iloc[0]):
+                st.metric("🎯 Meta", "-", border=True)
+            else:
+                st.metric("🎯 Meta", f"{df_result['Proposition'].iloc[0]:.1f} kg", delta='8%', width="stretch", height="content",border=True)
 
         with col5:
 
@@ -250,7 +269,8 @@ for exercise in resultado['Exercise'].unique():
             </style>
             """, unsafe_allow_html=True)
 
-            st.button(t("gym_save",lang),key=f'save_button_id_{exercise}',on_click=insert_one,args=("gym", df_update_github.iloc[0].to_dict()),width='stretch')
+            # st.button(t("gym_save",lang),key=f'save_button_id_{exercise}',on_click=insert_one,args=("gym", df_update_github.iloc[0].to_dict()),width='stretch')
+            st.button(t("gym_save",lang),key=f'save_button_id_{exercise}',on_click=insert_one,args=("fct_training", data_fct_update),width='stretch')
 
         with col6:
 
@@ -264,7 +284,7 @@ for exercise in resultado['Exercise'].unique():
             </style>
             """, unsafe_allow_html=True)
 
-            if df_done_check == datetime.now().date():
+            if fct_dt_ymd == datetime.now().date():
                 st.session_state[f'checkbox_id_{exercise}'] = True
             else:
                 st.session_state[f'checkbox_id_{exercise}'] = False

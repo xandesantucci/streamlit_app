@@ -14,6 +14,7 @@ from psycopg2.extras import execute_values
 from contextlib import contextmanager
 import tomllib
 from pathlib import Path
+from functools import lru_cache
 
 # ─────────────────────────────────────────────
 # LEITURA DO CONFIG.TOML
@@ -198,34 +199,114 @@ def select_all(tabela: str, colunas: list[str] = None) -> list[dict]:
 # ─────────────────────────────────────────────
 # FUNÇÕES DE INSERT
 # ─────────────────────────────────────────────
+# def insert_one(tabela: str, dados: dict) -> None:
+#     """Insere ou atualiza um registro baseado em dt_ymd + exercise."""
+#     def sanitize(val):
+#         if hasattr(val, 'item'):
+#             return val.item()
+#         if pd.isna(val):
+#             return None
+#         return val
+
+#     dados = {k: sanitize(v) for k, v in dados.items()}
+
+#     colunas       = ", ".join(f'"{k}"' for k in dados.keys())
+#     placeholders  = ", ".join(["%s"] * len(dados))
+#     updates       = ", ".join(f'"{k}" = EXCLUDED."{k}"' for k in dados.keys() if k not in ("dt_ymd", "exercise"))
+
+#     sql = f"""
+#         INSERT INTO {tabela} ({colunas})
+#         VALUES ({placeholders})
+#         ON CONFLICT (dt_ymd, exercise)
+#         DO UPDATE SET {updates}
+#     """
+
+#     with get_connection() as conn:
+#         with conn.cursor() as cur:
+#             cur.execute(sql, list(dados.values()))
+#     print(f"[OK] 1 registro inserido/atualizado em '{tabela}'.")
+
+
+
+
+@lru_cache(maxsize=None)
+def get_conflict_keys(tabela: str) -> tuple[str, ...]:
+    """Descobre as colunas da PK (ou de um índice UNIQUE) da tabela. Resultado fica em cache."""
+    schema, _, nome = tabela.rpartition(".")
+    schema = schema or "public"
+
+    query = """
+        SELECT a.attname
+        FROM pg_index i
+        JOIN pg_attribute a
+          ON a.attrelid = i.indrelid
+         AND a.attnum = ANY(i.indkey)
+        WHERE i.indrelid = to_regclass(%s)
+          AND {cond}
+        ORDER BY array_position(i.indkey::int2[], a.attnum)
+    """
+    ident = f'"{schema}"."{nome}"'
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            # 1) tenta a chave primária
+            cur.execute(query.format(cond="i.indisprimary"), (ident,))
+            cols = [r[0] for r in cur.fetchall()]
+
+            # 2) fallback: primeiro índice único não-parcial
+            if not cols:
+                cur.execute(
+                    query.format(cond="i.indisunique AND i.indpred IS NULL")
+                    .replace("ORDER BY", "ORDER BY i.indexrelid, "),
+                    (ident,),
+                )
+                rows = cur.fetchall()
+                cols = [r[0] for r in rows]  # pode misturar índices; ver nota abaixo
+
+    if not cols:
+        raise ValueError(f"Tabela '{tabela}' não tem PK nem índice UNIQUE.")
+    return tuple(cols)
+
+
 def insert_one(tabela: str, dados: dict) -> None:
-    """Insere ou atualiza um registro baseado em dt_ymd + exercise."""
+    """Insere ou atualiza um registro usando a PK da tabela como chave de conflito."""
     def sanitize(val):
-        if hasattr(val, 'item'):
+        if hasattr(val, "item"):
             return val.item()
         if pd.isna(val):
             return None
         return val
 
     dados = {k: sanitize(v) for k, v in dados.items()}
+    chaves = get_conflict_keys(tabela)
 
-    colunas       = ", ".join(f'"{k}"' for k in dados.keys())
-    placeholders  = ", ".join(["%s"] * len(dados))
-    updates       = ", ".join(f'"{k}" = EXCLUDED."{k}"' for k in dados.keys() if k not in ("dt_ymd", "exercise"))
+    faltando = [c for c in chaves if c not in dados]
+    if faltando:
+        raise ValueError(f"Faltam as colunas de chave {faltando} em 'dados'.")
 
-    sql = f"""
-        INSERT INTO {tabela} ({colunas})
-        VALUES ({placeholders})
-        ON CONFLICT (dt_ymd, exercise)
-        DO UPDATE SET {updates}
-    """
+    tabela_id = sql.SQL(".").join(sql.Identifier(p) for p in tabela.split("."))
+    colunas = sql.SQL(", ").join(sql.Identifier(k) for k in dados)
+    placeholders = sql.SQL(", ").join(sql.Placeholder() * len(dados))
+    conflito = sql.SQL(", ").join(sql.Identifier(k) for k in chaves)
+
+    updates = [k for k in dados if k not in chaves]
+    if updates:
+        acao = sql.SQL("DO UPDATE SET {}").format(
+            sql.SQL(", ").join(
+                sql.SQL("{0} = EXCLUDED.{0}").format(sql.Identifier(k)) for k in updates
+            )
+        )
+    else:
+        acao = sql.SQL("DO NOTHING")
+
+    query = sql.SQL(
+        "INSERT INTO {} ({}) VALUES ({}) ON CONFLICT ({}) {}"
+    ).format(tabela_id, colunas, placeholders, conflito, acao)
 
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute(sql, list(dados.values()))
-    print(f"[OK] 1 registro inserido/atualizado em '{tabela}'.")
-
-
+            cur.execute(query, list(dados.values()))
+    # print(f"[OK] 1 registro inserido/atualizado em '{tabela}'.")
 
 def st_write_justify(text, word='none', color="green"):
     if word != 'none':
